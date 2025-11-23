@@ -841,12 +841,29 @@ setInterval(() => {
 
 // Serve static files from the React app
 import path from 'path';
-app.use(express.static(path.join(__dirname, '../../client/dist')));
+import fs from 'fs';
+
+const clientBuildPath = path.join(__dirname, '../../client/dist');
+console.log('Serving static files from:', clientBuildPath);
+if (fs.existsSync(clientBuildPath)) {
+    console.log('Client build directory exists.');
+} else {
+    console.error('Client build directory DOES NOT EXIST at:', clientBuildPath);
+}
+
+app.use(express.static(clientBuildPath));
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+    console.log('Catch-all route hit for:', req.url);
+    const indexPath = path.join(clientBuildPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        console.error('index.html not found at:', indexPath);
+        res.status(404).send('Client build not found (index.html missing)');
+    }
 });
 
 const PORT = process.env.PORT || 3001;
