@@ -107,7 +107,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen md:h-screen w-screen relative flex flex-col items-center justify-center gap-4 md:gap-8 overflow-y-auto md:overflow-hidden py-8 md:py-0">
+    <div className="min-h-[100dvh] md:h-screen w-screen relative flex flex-col items-center justify-start md:justify-center gap-4 md:gap-8 overflow-y-auto md:overflow-hidden py-8 md:py-0 pt-20 md:pt-0">
 
       {/* Settings Menu Always Accessible */}
       <SettingsMenu />
@@ -120,14 +120,14 @@ function App() {
         />
       )}
 
-      <div className="text-center z-10">
-        <h1 className="text-6xl sketch-title mb-2">
+      <div className="text-center z-10 flex-shrink-0">
+        <h1 className="text-5xl md:text-6xl sketch-title mb-2">
           SKETCH IT!
         </h1>
-        <p className="font-hand text-ink font-bold opacity-90 text-xl">DRAW, GUESS, WIN!</p>
+        <p className="font-hand text-ink font-bold opacity-90 text-lg md:text-xl">DRAW, GUESS, WIN!</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 md:gap-8 z-10 items-center md:items-start h-auto md:h-[550px] w-full max-w-2xl md:max-w-none px-4 md:px-0">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 z-10 items-center md:items-start h-auto md:h-[550px] w-full max-w-md md:max-w-none px-4 md:px-0 md:justify-center flex-shrink-0 pb-8 md:pb-0">
         {/* Left Column: Join/Create Tabs */}
         <div className="gartic-card w-full md:w-80 flex flex-col h-[500px] md:h-full order-1">
           {/* Tabs Header */}
@@ -252,7 +252,7 @@ function App() {
         </div>
 
         {/* Right Column: Room List */}
-        <div className="gartic-card w-full md:w-96 flex flex-col h-[400px] md:h-full order-2">
+        <div className="gartic-card w-full md:w-96 flex flex-col h-96 md:h-full order-2 flex-shrink-0">
           <div className="p-3 border-b-2 border-dashed border-gray-300 flex justify-between items-center mb-2">
             <span className="text-sm font-bold text-gray-500 font-hand">AVAILABLE ROOMS</span>
             <button onClick={getRooms} className="text-ink hover:rotate-180 transition-transform duration-500">
