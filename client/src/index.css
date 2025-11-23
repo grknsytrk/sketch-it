@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+@theme {
+  --font-hand: "Patrick Hand", cursive;
+  --font-marker: "Gloria Hallelujah", cursive;
+  --font-sketch: "Indie Flower", cursive;
+
+  --color-paper: #fdfbf7;
+  --color-ink: #2d2d2d;
+  --color-pencil-gray: #555555;
+
+  --color-pastel-pink: #ffb7b2;
+  --color-pastel-mint: #b2f7ef;
+  --color-pastel-yellow: #fff4bd;
+  --color-pastel-blue: #a0e7e5;
+  --color-pastel-purple: #e2b2ff;
+  --color-pastel-green: #b5ead7; /* Added specifically for Create button replacement */
+
+  --shadow-sketch: 2px 3px 0px rgba(45, 45, 45, 0.2);
+  --radius-sketch: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --radius-sketch-sm: 25px 2px 20px 3px / 3px 20px 3px 25px;
+  
+  --animate-scribble: scribble 0.4s steps(10) infinite alternate;
+  
+  @keyframes scribble {
+    0% { transform: rotate(-0.5deg) scale(1); }
+    100% { transform: rotate(0.5deg) scale(1.02); }
+  }
+
+  @keyframes draw-stroke {
+    to { stroke-dashoffset: 0; }
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-hand);
+  overflow: hidden;
+  height: 100vh;
+  background-image: 
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Paper Texture Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Utility Classes for Sketchy Aesthetic */
+.bg-pattern {
+    background-color: transparent; /* Override old style */
+    background-image: none;
+}
+
+.font-hand { font-family: var(--font-hand); }
+.font-marker { font-family: var(--font-marker); }
+
+.border-sketch {
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sketch-sm);
+}
+
+.shadow-sketch {
+  box-shadow: var(--shadow-sketch);
+}
+
+/* Button Style Re-imagined */
+.gartic-btn {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  padding: 10px 20px;
+  font-family: var(--font-marker);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.15s steps(5);
+  box-shadow: 2px 3px 0px var(--color-ink);
+  position: relative;
+  overflow: visible;
+}
+
+.gartic-btn:hover {
+  transform: translate(-1px, -2px) rotate(-1deg);
+  box-shadow: 4px 6px 0px var(--color-ink);
+  background: var(--color-pastel-yellow);
+  /* Remove existing background colors override if present in HTML via utility classes, 
+     but usually specific class wins if specificity is higher. 
+     Here we rely on the fact that we are redesigning. */
+}
+
+.gartic-btn:active {
+  transform: translate(1px, 2px);
+  box-shadow: 0px 0px 0px var(--color-ink);
+}
+
+/* Card/Container Style Re-imagined */
+.gartic-card {
+  background: white; /* Or paper color if we want transparency */
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sketch);
+  padding: 20px;
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+/* Input Style Re-imagined */
+.gartic-input {
+  background: transparent;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sketch-sm);
+  padding: 10px 15px;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  outline: none;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  width: 100%; /* Ensure full width usually */
+}
+
+.gartic-input:focus {
+  border-color: var(--color-ink);
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 2px 3px 0px var(--color-pastel-blue);
+  transform: rotate(0.5deg);
+}
+
+/* New Classes for App.tsx replacement */
+
+.sketch-title {
+    font-family: var(--font-marker);
+    color: var(--color-ink);
+    text-shadow: 3px 3px 0px var(--color-pastel-pink);
+    transform: rotate(-2deg);
+    letter-spacing: 2px;
+}
+
+.sketch-modal {
+    background: var(--color-paper);
+    border: 3px solid var(--color-ink);
+    border-radius: var(--radius-sketch);
+    box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
+    padding: 2rem;
+}
+
+.room-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 2px solid var(--color-ink);
+    border-radius: var(--radius-sketch-sm);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s steps(3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.room-item:hover {
+    transform: scale(1.02) rotate(-0.5deg);
+    box-shadow: 3px 3px 0px var(--color-pastel-blue);
+}
+
+.room-item.selected {
+    background: var(--color-pastel-blue);
+    border-color: var(--color-ink);
+    box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+    transform: scale(0.98);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+  border-left: 2px solid var(--color-ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-pencil-gray);
+  border: 2px solid var(--color-paper);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink);
+}
