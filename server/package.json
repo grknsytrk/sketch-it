@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "cd ../client && npm install --production=false && npm run build"
   },
   "dependencies": {
     "cors": "^2.8.5",
