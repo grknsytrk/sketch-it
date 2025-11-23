@@ -79,7 +79,6 @@ function App() {
     return (
       <>
         <GameView />
-        <SettingsMenu />
       </>
     );
   }
@@ -90,7 +89,7 @@ function App() {
 
   return (
     <div className="h-screen w-screen relative flex flex-col items-center justify-center gap-8 overflow-hidden">
-      
+
       {/* Settings Menu Always Accessible */}
       <SettingsMenu />
 
