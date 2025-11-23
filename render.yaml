@@ -32,4 +32,4 @@ services:
       - key: VITE_API_URL
         # IMPORTANT: After backend deploys, replace this with your actual backend URL
         # Example: https://game-online-server.onrender.com
-        value: https://YOUR_BACKEND_URL_HERE.onrender.com
+        value: https://sketch-it-server.onrender.com/

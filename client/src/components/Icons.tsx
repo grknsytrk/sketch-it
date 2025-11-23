@@ -104,3 +104,4 @@ export const IconRefresh: React.FC<IconProps> = (props) => (
     </SketchIcon>
 );
 
+
