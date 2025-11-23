@@ -662,6 +662,27 @@ io.on('connection', (socket) => {
             const allFinished = guessers.every(p => p.hasGuessed || (p.guessCount || 0) >= 5);
 
             if (allFinished) {
+                // Award drawer compensation points if nobody guessed correctly
+                // This ensures fairness in 1v1 and small games
+                if (game.correctGuessers.length === 0) {
+                    const drawer = game.players[game.currentDrawer];
+                    // Give drawer 3-5 points based on average attempts made
+                    const totalAttempts = guessers.reduce((sum, p) => sum + (p.guessCount || 0), 0);
+                    const avgAttempts = totalAttempts / guessers.length;
+                    // More attempts = better drawing (drawer tried hard) = more points
+                    const compensationPoints = Math.ceil(3 + (avgAttempts / 5) * 2); // 3-5 points
+                    drawer.score += compensationPoints;
+
+                    const compensationMsg: ChatMessage = {
+                        sender: 'System',
+                        text: `${drawer.name} earned ${compensationPoints} points for drawing!`,
+                        timestamp: Date.now(),
+                        isSystemMessage: true
+                    };
+                    game.messages.push(compensationMsg);
+                    broadcastGameState(roomId, game);
+                }
+
                 endRound(game, roomId);
             }
         }

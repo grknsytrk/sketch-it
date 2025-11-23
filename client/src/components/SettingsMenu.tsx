@@ -23,7 +23,7 @@ const SettingsMenu: React.FC = () => {
     };
 
     return (
-        <div className="absolute top-4 right-4 z-40">
+        <div className="absolute top-4 right-4 z-30">
             {!isOpen ? (
                 <button
                     onClick={() => setIsOpen(true)}

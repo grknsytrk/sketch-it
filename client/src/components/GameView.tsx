@@ -19,7 +19,7 @@ const GameView: React.FC = () => {
         if (!gameState?.roundEndTime) return;
 
         const interval = setInterval(() => {
-            const remaining = Math.max(0, Math.ceil((gameState.roundEndTime! - Date.now()) / 1000));
+            const remaining = Math.max(0, Math.min(80, Math.floor((gameState.roundEndTime! - Date.now()) / 1000)));
             setTimeLeft(remaining);
         }, 100);
 
@@ -45,7 +45,7 @@ const GameView: React.FC = () => {
 
     return (
         <div className="flex w-full h-screen p-4 gap-4 overflow-hidden relative">
-            
+
             {/* Settings Menu Always Accessible in Game too */}
             <SettingsMenu />
 
