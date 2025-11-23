@@ -89,10 +89,8 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-screen relative flex flex-col items-center justify-center gap-8 overflow-hidden">
-      
-      {/* Settings Menu Always Accessible */}
-      <SettingsMenu />
+    <div className="min-h-screen bg-pattern flex items-center justify-center p-4 font-sans text-ink relative overflow-hidden">
+      <SettingsMenu className="absolute top-4 right-4 z-50" />
 
       {notification && (
         <Notification
