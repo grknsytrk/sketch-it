@@ -6,7 +6,7 @@ import SettingsMenu from './components/SettingsMenu';
 import { IconLock, IconRefresh } from './components/Icons';
 
 function App() {
-  const { connect, isConnected, joinRoom, gameState, rooms, notification, clearNotification, getRooms } = useGameStore();
+  const { connect, isConnected, joinRoom, gameState, rooms, notification, clearNotification, getRooms, showNotification } = useGameStore();
   const [activeTab, setActiveTab] = useState<'create' | 'join'>('create');
 
   // Form States
@@ -59,7 +59,7 @@ function App() {
 
   const handleCreate = () => {
     if (!playerName || !createRoomId) {
-      alert("Please enter name and room ID");
+      showNotification("Please enter name and room ID", "error");
       return;
     }
     // Use custom avatar
@@ -69,7 +69,7 @@ function App() {
 
   const handleJoinClick = () => {
     if (!playerName || !joinRoomId) {
-      alert("Please enter name and select a room");
+      showNotification("Please enter name and select a room", "error");
       return;
     }
 
