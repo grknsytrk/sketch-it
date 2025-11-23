@@ -105,10 +105,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     connect: () => {
         if (get().socket) return;
 
-        // In production, default to the known backend URL if env var is missing
-        // In development, default to localhost
-        const defaultUrl = import.meta.env.DEV ? 'http://localhost:3001' : 'https://sketch-it-server.onrender.com';
-        const apiUrl = import.meta.env.VITE_API_URL || defaultUrl;
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
         const socket = io(apiUrl);
 
         socket.on('connect', () => {

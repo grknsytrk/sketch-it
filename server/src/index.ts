@@ -839,43 +839,6 @@ setInterval(() => {
     });
 }, 1000);
 
-// Serve static files from the React app
-import path from 'path';
-import fs from 'fs';
-
-// In production, the build script copies client files to 'public' folder in the same directory as the server bundle
-const clientBuildPath = path.join(__dirname, 'public');
-
-console.log('--- DEBUG FILE STRUCTURE ---');
-console.log('Current __dirname:', __dirname);
-console.log('Target clientBuildPath:', clientBuildPath);
-
-if (fs.existsSync(clientBuildPath)) {
-    console.log('Client build directory exists.');
-    try {
-        console.log('Contents of public:', fs.readdirSync(clientBuildPath));
-    } catch (e) {
-        console.log('Could not list public:', e);
-    }
-} else {
-    console.error('Client build directory DOES NOT EXIST at:', clientBuildPath);
-}
-console.log('----------------------------');
-
-app.use(express.static(clientBuildPath));
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-    const indexPath = path.join(clientBuildPath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
-    } else {
-        console.error('index.html not found at:', indexPath);
-        res.status(404).send('Client build not found (index.html missing). Check build logs.');
-    }
-});
-
 const PORT = process.env.PORT || 3001;
 const HOST = '0.0.0.0';
 server.listen(Number(PORT), HOST, () => {
