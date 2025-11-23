@@ -21,4 +21,16 @@ echo "Building Server..."
 cd ../server
 npm install
 npm run build
-echo "Server build successful."
+
+# Verify server build
+if [ ! -d "dist" ]; then
+  echo "ERROR: Server build failed! 'dist' directory missing."
+  exit 1
+fi
+
+# Copy Client build to Server public directory for serving
+echo "Copying client build to server/dist/public..."
+mkdir -p dist/public
+cp -r ../client/dist/* dist/public/
+
+echo "Server build and asset copy successful."
