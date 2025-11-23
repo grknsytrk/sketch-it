@@ -25,6 +25,25 @@ function App() {
     connect();
   }, [connect]);
 
+  // Handle URL routing
+  useEffect(() => {
+    // Check URL on load
+    const path = window.location.pathname.substring(1); // Remove leading slash
+    if (path && path.length > 0) {
+      setJoinRoomId(path);
+      setActiveTab('join');
+    }
+  }, []);
+
+  // Update URL when game state changes
+  useEffect(() => {
+    if (gameState?.roomId) {
+      window.history.pushState({}, '', `/${gameState.roomId}`);
+    } else {
+      window.history.pushState({}, '', '/');
+    }
+  }, [gameState?.roomId]);
+
   // Load saved name
   useEffect(() => {
     const savedName = localStorage.getItem('playerName');
