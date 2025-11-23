@@ -839,9 +839,6 @@ setInterval(() => {
     });
 }, 1000);
 
-    });
-}, 1000);
-
 // Serve static files from the React app
 import path from 'path';
 app.use(express.static(path.join(__dirname, '../../client/dist')));
