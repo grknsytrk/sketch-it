@@ -191,6 +191,10 @@ function App() {
                     <option value="animals">Animals</option>
                     <option value="food">Food</option>
                     <option value="objects">Objects</option>
+                    <option value="anime">Anime</option>
+                    <option value="movies">Movies</option>
+                    <option value="games">Games</option>
+                    <option value="sports">Sports</option>
                   </select>
                 </div>
 
