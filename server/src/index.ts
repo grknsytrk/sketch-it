@@ -844,12 +844,37 @@ import path from 'path';
 import fs from 'fs';
 
 const clientBuildPath = path.join(__dirname, '../../client/dist');
-console.log('Serving static files from:', clientBuildPath);
+const rootPath = path.join(__dirname, '../../');
+const clientPath = path.join(__dirname, '../../client');
+
+console.log('--- DEBUG FILE STRUCTURE ---');
+console.log('Current __dirname:', __dirname);
+console.log('Root path resolved to:', rootPath);
+
+try {
+    console.log('Contents of Root:', fs.readdirSync(rootPath));
+} catch (e) {
+    console.log('Could not list Root:', e);
+}
+
+try {
+    console.log('Contents of Client dir:', fs.readdirSync(clientPath));
+} catch (e) {
+    console.log('Could not list Client dir:', e);
+}
+
+console.log('Target clientBuildPath:', clientBuildPath);
 if (fs.existsSync(clientBuildPath)) {
     console.log('Client build directory exists.');
+    try {
+        console.log('Contents of dist:', fs.readdirSync(clientBuildPath));
+    } catch (e) {
+        console.log('Could not list dist:', e);
+    }
 } else {
     console.error('Client build directory DOES NOT EXIST at:', clientBuildPath);
 }
+console.log('----------------------------');
 
 app.use(express.static(clientBuildPath));
 
