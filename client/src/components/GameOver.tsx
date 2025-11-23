@@ -44,7 +44,7 @@ const GameOver: React.FC<GameOverProps> = ({ winners, isHost }) => {
                 {/* Avatar */}
                 <div className="relative mb-2">
                     {rank === 1 && (
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 animate-bounce">
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2">
                             <IconCrown size={48} className="text-yellow-500" fill="#FFD700" />
                         </div>
                     )}
@@ -70,7 +70,7 @@ const GameOver: React.FC<GameOverProps> = ({ winners, isHost }) => {
 
                 {/* Podium Block */}
                 <div className={`w-24 ${height} ${bgColor} mt-2 border-2 border-ink flex items-end justify-center pb-2`}
-                     style={{ borderRadius: '10px 10px 0 0' }}>
+                    style={{ borderRadius: '10px 10px 0 0' }}>
                 </div>
             </div>
         );

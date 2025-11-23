@@ -34,9 +34,9 @@ export class SoundManager {
 
             // Guess limit reached - Error/Warning (ONLY LOCAL)
             guessLimitReached: 'https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3',
-            
+
             // UI Click - Paper/Pen sound equivalent (using a short click for now, varied by pitch)
-            click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3' 
+            click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'
         };
 
         // Preload all sounds
@@ -55,15 +55,15 @@ export class SoundManager {
         if (sound) {
             // Clone to allow overlapping sounds
             const clone = sound.cloneNode() as HTMLAudioElement;
-            clone.volume = Math.min(1, Math.max(0, volume));
-            
-            // ORGANIC FEEL: Randomize playback rate slightly (0.85 - 1.15)
-            // This mimics the imperfection of real-world sounds/human actions
-            const randomRate = 0.85 + Math.random() * 0.3;
+            clone.volume = Math.min(1, Math.max(0, volume * 0.5)); // Reduce global volume by 50%
+
+            // ORGANIC FEEL: Randomize playback rate slightly (0.8 - 1.0)
+            // Lower pitch sounds softer and less "alert-like"
+            const randomRate = 0.8 + Math.random() * 0.2;
             clone.playbackRate = randomRate;
 
             // Needed for some browsers to handle rapid playback
-            clone.preservesPitch = false; 
+            clone.preservesPitch = false;
 
             clone.play().catch(err => {
                 // Ignore autoplay restrictions errors
@@ -78,7 +78,7 @@ export class SoundManager {
         this.enabled = !this.enabled;
         return this.enabled;
     }
-    
+
     isEnabled() {
         return this.enabled;
     }
