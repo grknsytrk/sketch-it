@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { soundManager } from '../utils/soundManager';
 import { IconMenu, IconX, IconSoundOn, IconSoundOff } from './Icons';
 
-interface SettingsMenuProps {
-    className?: string;
-}
-
-const SettingsMenu: React.FC<SettingsMenuProps> = ({ className = "absolute top-4 right-4 z-30" }) => {
+const SettingsMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [soundEnabled, setSoundEnabled] = useState(soundManager.isEnabled());
     const [volume, setVolume] = useState(0.5); // Default volume
@@ -27,7 +23,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ className = "absolute top-4
     };
 
     return (
-        <div className={className}>
+        <div className="absolute top-4 right-4 z-30">
             {!isOpen ? (
                 <button
                     onClick={() => setIsOpen(true)}
@@ -37,7 +33,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ className = "absolute top-4
                     MENU
                 </button>
             ) : (
-                <div className="gartic-card p-4 w-64 bg-white animate-bounce-in absolute right-0 top-0 z-50">
+                <div className="gartic-card p-4 w-64 bg-white animate-bounce-in">
                     <div className="flex justify-between items-center mb-4 border-b-2 border-dashed border-gray-300 pb-2">
                         <span className="text-ink text-lg font-bold font-marker">SETTINGS</span>
                         <button onClick={() => setIsOpen(false)} className="text-ink hover:text-red-500">

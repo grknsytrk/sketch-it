@@ -46,6 +46,9 @@ const GameView: React.FC = () => {
     return (
         <div className="flex w-full h-screen p-4 gap-4 overflow-hidden relative">
 
+            {/* Settings Menu Always Accessible in Game too */}
+            <SettingsMenu />
+
             {/* Left Sidebar: Scoreboard */}
             <div className="w-64 flex-shrink-0 flex flex-col gap-4">
                 <div className="gartic-card p-3 flex items-center justify-between bg-white">
@@ -122,9 +125,6 @@ const GameView: React.FC = () => {
                             </span>
                         </div>
                     )}
-
-                    {/* Settings Menu */}
-                    <SettingsMenu className="relative h-full flex items-center" />
                 </div>
 
                 {/* Game Area: Canvas & Chat */}
