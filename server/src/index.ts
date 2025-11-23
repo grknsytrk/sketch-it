@@ -839,6 +839,19 @@ setInterval(() => {
     });
 }, 1000);
 
+    });
+}, 1000);
+
+// Serve static files from the React app
+import path from 'path';
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+});
+
 const PORT = process.env.PORT || 3001;
 const HOST = '0.0.0.0';
 server.listen(Number(PORT), HOST, () => {
