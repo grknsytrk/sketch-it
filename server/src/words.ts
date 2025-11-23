@@ -113,38 +113,6 @@ export const WORD_CATEGORIES = {
         'plane', 'airplane', 'helicopter', 'rocket', 'ufo', 'boat', 'ship', 'yacht',
         'submarine', 'tractor', 'tank',
 
-        // Musical Instruments
-        'guitar', 'violin', 'piano', 'drum', 'flute', 'trumpet', 'saxophone', 'harp',
-        'accordion', 'xylophone', 'microphone'
-    ],
-
-    anime: [
-        // Titles
-        'naruto', 'one piece', 'dragon ball', 'bleach', 'death note', 'pokemon', 'digimon',
-        'attack on titan', 'demon slayer', 'jujutsu kaisen', 'my hero academia', 'hunter x hunter',
-        'fullmetal alchemist', 'tokyo ghoul', 'one punch man', 'sword art online', 'fairy tail',
-        'sailor moon', 'neon genesis evangelion', 'cowboy bebop', 'spirited away', 'totoro',
-        'your name', 'akira', 'ghibli', 'jo jo', 'haikyuu', 'blue lock', 'chainsaw man',
-        'spy x family', 'berserk', 'gintama', 'code geass', 'black clover',
-
-        // Characters
-        'goku', 'vegeta', 'luffy', 'zoro', 'nami', 'chopper', 'naruto', 'sasuke', 'sakura',
-        'kakashi', 'ichigo', 'pikachu', 'ash ketchum', 'charizard', 'light yagami', 'l', 'ryuk',
-        'eren yeager', 'mikasa', 'levi', 'tanjiro', 'nezuko', 'zenitsu', 'inosuke', 'gojo',
-        'sukuna', 'deku', 'bakugo', 'todoroki', 'all might', 'gon', 'killua', 'hisoka',
-        'edward elric', 'alphonse', 'kaneki', 'saitama', 'kirito', 'asuna', 'natsu', 'lucy',
-        'usagi', 'totoro', 'anya', 'yor', 'loid', 'denji', 'power', 'makima',
-
-        // Objects & Concepts
-        'pokeball', 'pokedex', 'kunai', 'shuriken', 'katana', 'zanpakuto', 'death note',
-        'dragon ball', 'devil fruit', 'straw hat', 'ninja headband', 'titan', 'gundam', 'mecha',
-        'sharingan', 'rasengan', 'kamehameha', 'bankai', 'nen', 'chakra', 'mana', 'grimoire'
-    ],
-
-    movies: [
-        // Franchises & Titles
-        'harry potter', 'star wars', 'lord of the rings', 'hobbit', 'matrix', 'avatar',
-        'titanic', 'jurassic park', 'indiana jones', 'pirates of the caribbean', 'godfather',
         'pulp fiction', 'fight club', 'forrest gump', 'lion king', 'shrek', 'toy story',
         'finding nemo', 'frozen', 'cars', 'minions', 'despicable me', 'kung fu panda',
         'how to train your dragon', 'spider man', 'batman', 'superman', 'avengers', 'iron man',
