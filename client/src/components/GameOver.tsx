@@ -1,6 +1,5 @@
 import React from 'react';
 import { useGameStore } from '../store/useGameStore';
-import { IconCrown } from './Icons';
 
 interface GameOverProps {
     winners: { name: string; score: number; avatarSeed?: string }[];
@@ -43,11 +42,6 @@ const GameOver: React.FC<GameOverProps> = ({ winners, isHost }) => {
             <div className={`flex flex-col items-center ${order} ${scale} transition-all duration-500 font-hand`}>
                 {/* Avatar */}
                 <div className="relative mb-2">
-                    {rank === 1 && (
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2">
-                            <IconCrown size={48} className="text-yellow-500" fill="#FFD700" />
-                        </div>
-                    )}
                     <img
                         src={getAvatarUrl(player.avatarSeed || player.name)}
                         alt={player.name}

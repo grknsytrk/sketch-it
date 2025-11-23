@@ -19,12 +19,17 @@ const GameView: React.FC = () => {
         if (!gameState?.roundEndTime) return;
 
         const interval = setInterval(() => {
-            const remaining = Math.max(0, Math.min(80, Math.floor((gameState.roundEndTime! - Date.now()) / 1000)));
+            // Calculate time offset if server time is available
+            const offset = gameState.serverTime ? gameState.serverTime - Date.now() : 0;
+            // Adjust current time by offset to match server time
+            const serverNow = Date.now() + offset;
+
+            const remaining = Math.max(0, Math.min(80, Math.floor((gameState.roundEndTime! - serverNow) / 1000)));
             setTimeLeft(remaining);
         }, 100);
 
         return () => clearInterval(interval);
-    }, [gameState?.roundEndTime]);
+    }, [gameState?.roundEndTime, gameState?.serverTime]);
 
     // Tick sound effect when time is running low
     useEffect(() => {

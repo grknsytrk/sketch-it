@@ -60,7 +60,9 @@ const broadcastGameState = (roomId: string, game: GameState) => {
         room.forEach((socketId) => {
             const socket = io.sockets.sockets.get(socketId);
             if (socket) {
-                socket.emit('gameStateUpdate', getMaskedGameState(game, socketId));
+                const state = getMaskedGameState(game, socketId);
+                // Inject serverTime for client synchronization
+                socket.emit('gameStateUpdate', { ...state, serverTime: Date.now() });
             }
         });
     }
@@ -569,10 +571,13 @@ io.on('connection', (socket) => {
         }
 
         // Check if it's a correct guess
+        // Robust check: Compare IDs, not just indices
+        const isDrawer = game.players[game.currentDrawer].id === player.id;
+
         if (game.currentWord &&
             game.gameStarted &&
             message.toLowerCase().trim() === game.currentWord.toLowerCase() &&
-            player.index !== game.currentDrawer &&
+            !isDrawer &&
             !game.correctGuessers.includes(player.id)) {
 
             // Calculate points based on order and time
@@ -635,7 +640,7 @@ io.on('connection', (socket) => {
             }
         } else {
             // Check guess limit
-            if (game.gameStarted && game.currentWord && player.index !== game.currentDrawer) {
+            if (game.gameStarted && game.currentWord && !isDrawer) {
                 if ((player.guessCount || 0) >= 5) {
                     // Send private system message
                     socket.emit('gameStateUpdate', game); // Ensure state is synced
@@ -658,10 +663,10 @@ io.on('connection', (socket) => {
 
             // Check if round should end early (everyone guessed OR used all guesses)
             // Filter out drawer
-            const guessers = game.players.filter(p => p.index !== game.currentDrawer);
+            const guessers = game.players.filter(p => p.id !== game.players[game.currentDrawer].id);
             const allFinished = guessers.every(p => p.hasGuessed || (p.guessCount || 0) >= 5);
 
-            if (allFinished) {
+            if (allFinished && game.gameStarted && game.currentWord) {
                 // Award drawer compensation points if nobody guessed correctly
                 // This ensures fairness in 1v1 and small games
                 if (game.correctGuessers.length === 0) {

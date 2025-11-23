@@ -37,6 +37,7 @@ export interface GameState {
     players: Player[];
     gameStarted: boolean;
     messages: ChatMessage[];
+    serverTime?: number; // Added for time sync
 
     // Drawing game specific
     currentDrawer: number;
