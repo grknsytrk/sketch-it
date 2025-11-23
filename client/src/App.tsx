@@ -107,7 +107,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-screen relative flex flex-col items-center justify-center gap-8 overflow-hidden">
+    <div className="min-h-screen md:h-screen w-screen relative flex flex-col items-center justify-center gap-4 md:gap-8 overflow-y-auto md:overflow-hidden py-8 md:py-0">
 
       {/* Settings Menu Always Accessible */}
       <SettingsMenu />
@@ -127,9 +127,9 @@ function App() {
         <p className="font-hand text-ink font-bold opacity-90 text-xl">DRAW, GUESS, WIN!</p>
       </div>
 
-      <div className="flex gap-8 z-10 items-start h-[550px]">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-8 z-10 items-center md:items-start h-auto md:h-[550px] w-full max-w-2xl md:max-w-none px-4 md:px-0">
         {/* Left Column: Join/Create Tabs */}
-        <div className="gartic-card w-80 flex flex-col h-full">
+        <div className="gartic-card w-full md:w-80 flex flex-col h-[500px] md:h-full order-1">
           {/* Tabs Header */}
           <div className="flex border-b-2 border-dashed border-gray-300 mb-4">
             <button
@@ -252,7 +252,7 @@ function App() {
         </div>
 
         {/* Right Column: Room List */}
-        <div className="gartic-card w-96 flex flex-col h-full">
+        <div className="gartic-card w-full md:w-96 flex flex-col h-[400px] md:h-full order-2">
           <div className="p-3 border-b-2 border-dashed border-gray-300 flex justify-between items-center mb-2">
             <span className="text-sm font-bold text-gray-500 font-hand">AVAILABLE ROOMS</span>
             <button onClick={getRooms} className="text-ink hover:rotate-180 transition-transform duration-500">

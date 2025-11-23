@@ -24,19 +24,19 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
         const handleResize = () => {
             if (wrapperRef.current) {
                 const { width: availWidth, height: availHeight } = wrapperRef.current.getBoundingClientRect();
-                
+
                 // Calculate best fit 4:3
                 let w = availWidth;
                 let h = availWidth * 0.75; // 3/4 ratio
 
                 if (h > availHeight) {
                     h = availHeight;
-                    w = availHeight * (4/3); // 4/3 ratio
+                    w = availHeight * (4 / 3); // 4/3 ratio
                 }
 
                 // Update state to trigger re-render with new dimensions
                 setDimensions({ width: w, height: h });
-                
+
                 if (canvasRef.current) {
                     canvasRef.current.width = w;
                     canvasRef.current.height = h;
@@ -78,7 +78,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
         } else if (action.type === 'draw' && action.x !== undefined && action.y !== undefined) {
             ctx.strokeStyle = action.color || '#000000';
             // Scale line width relative to canvas width (base 800px)
-            ctx.lineWidth = (action.size || 3) * (w / 800); 
+            ctx.lineWidth = (action.size || 3) * (w / 800);
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
@@ -126,9 +126,8 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
             size: currentSize
         };
         onDraw(action);
-        
-        // Immediate local feedback (optional, as we now have optimistic UI in store)
-        // But drawing directly on canvas can be even smoother
+
+        // Immediate local feedback
         const canvas = canvasRef.current;
         if (canvas) {
             const ctx = canvas.getContext('2d');
@@ -150,7 +149,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
             size: currentSize
         };
         onDraw(action);
-        
+
         // Immediate local feedback
         const canvas = canvasRef.current;
         if (canvas) {
@@ -171,44 +170,109 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
         onDraw(action);
     };
 
+    const getTouchPos = (e: React.TouchEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        if (!canvas) return { x: 0, y: 0 };
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        return {
+            x: (touch.clientX - rect.left) / rect.width,
+            y: (touch.clientY - rect.top) / rect.height
+        };
+    };
+
+    const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+        if (!isDrawer) return;
+        e.preventDefault(); // Prevent scrolling
+
+        const pos = getTouchPos(e);
+        setIsDrawing(true);
+        setLastPos(pos);
+
+        const action: DrawingAction = {
+            type: 'start',
+            x: pos.x,
+            y: pos.y,
+            color: currentColor,
+            size: currentSize
+        };
+        onDraw(action);
+
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) drawAction(ctx, action);
+        }
+    };
+
+    const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+        if (!isDrawer || !isDrawing) return;
+        e.preventDefault();
+
+        const pos = getTouchPos(e);
+        const action: DrawingAction = {
+            type: 'draw',
+            x: pos.x,
+            y: pos.y,
+            prevX: lastPos.x,
+            prevY: lastPos.y,
+            color: currentColor,
+            size: currentSize
+        };
+        onDraw(action);
+
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) drawAction(ctx, action);
+        }
+
+        setLastPos(pos);
+    };
+
+    const handleTouchEnd = () => {
+        setIsDrawing(false);
+    };
+
     return (
-        <div className="flex flex-col items-center gap-4 w-full h-full">
+        <div className="flex flex-col items-center gap-2 md:gap-4 w-full h-full">
             {/* Drawing Tools */}
             {isDrawer && (
-                <div className="flex flex-wrap gap-4 bg-paper border-2 border-ink border-dashed rounded-xl p-4 w-full justify-center shrink-0 items-center shadow-sm">
+                <div className="flex flex-wrap gap-2 md:gap-4 bg-paper border-2 border-ink border-dashed rounded-xl p-2 md:p-4 w-full justify-center shrink-0 items-center shadow-sm">
                     {/* Colors */}
-                    <div className="flex gap-2 flex-wrap justify-center">
+                    <div className="flex gap-1 md:gap-2 flex-wrap justify-center">
                         {colors.map(color => (
                             <button
                                 key={color}
                                 onClick={() => setCurrentColor(color)}
-                                className={`w-8 h-8 rounded-full border-2 transition-transform ${currentColor === color ? 'border-ink scale-125' : 'border-transparent hover:scale-110'}`}
+                                className={`w-6 h-6 md:w-8 md:h-8 rounded-full border-2 transition-transform ${currentColor === color ? 'border-ink scale-125' : 'border-transparent hover:scale-110'}`}
                                 style={{ backgroundColor: color, boxShadow: currentColor === color ? '0 0 0 2px white, 0 0 0 4px var(--color-ink)' : 'none' }}
                             />
                         ))}
                     </div>
 
-                    <div className="w-[1px] h-8 bg-gray-300 mx-2"></div>
+                    <div className="w-[1px] h-6 md:h-8 bg-gray-300 mx-1 md:mx-2"></div>
 
                     {/* Brush Size */}
                     <div className="flex items-center gap-2 font-hand font-bold">
-                        <span className="text-ink text-xs">SIZE:</span>
+                        <span className="text-ink text-[10px] md:text-xs">SIZE:</span>
                         <input
                             type="range"
                             min="1"
                             max="20"
                             value={currentSize}
                             onChange={(e) => setCurrentSize(Number(e.target.value))}
-                            className="w-24 accent-ink cursor-pointer"
+                            className="w-16 md:w-24 accent-ink cursor-pointer"
                         />
                     </div>
 
-                    <div className="w-[1px] h-8 bg-gray-300 mx-2"></div>
+                    <div className="w-[1px] h-6 md:h-8 bg-gray-300 mx-1 md:mx-2"></div>
 
                     {/* Clear Button */}
                     <button
                         onClick={handleClearCanvas}
-                        className="px-3 py-1 bg-red-100 text-red-600 border-2 border-red-400 rounded-full font-bold font-marker hover:bg-red-200 text-xs transition-colors"
+                        className="px-2 md:px-3 py-1 bg-red-100 text-red-600 border-2 border-red-400 rounded-full font-bold font-marker hover:bg-red-200 text-[10px] md:text-xs transition-colors"
                     >
                         CLEAR
                     </button>
@@ -218,14 +282,12 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
             {/* Canvas Wrapper - measures available space */}
             <div ref={wrapperRef} className="flex-1 w-full min-h-0 flex items-center justify-center overflow-hidden">
                 {/* Canvas Container - Fixed 4:3 ratio via calculated dimensions */}
-                <div 
+                <div
                     className="bg-white border-2 border-ink relative shadow-sketch"
                     style={{
                         width: dimensions.width,
                         height: dimensions.height,
-                        borderRadius: '2px 2px 2px 2px', // Slightly rough corners? No, canvas needs to be rectangle usually.
-                        // But we can add a wrapper with rough corners if we want to mask it.
-                        // For now, keeping it simple rectangle for drawing accuracy.
+                        borderRadius: '2px 2px 2px 2px',
                     }}
                 >
                     <canvas
@@ -234,7 +296,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
-                        className={`block w-full h-full ${isDrawer ? 'cursor-crosshair' : 'cursor-not-allowed'}`}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        className={`block w-full h-full ${isDrawer ? 'cursor-crosshair touch-none' : 'cursor-not-allowed'}`}
                     />
                 </div>
             </div>
