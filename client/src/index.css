@@ -14,21 +14,29 @@
   --color-pastel-yellow: #fff4bd;
   --color-pastel-blue: #a0e7e5;
   --color-pastel-purple: #e2b2ff;
-  --color-pastel-green: #b5ead7; /* Added specifically for Create button replacement */
+  --color-pastel-green: #b5ead7;
+  /* Added specifically for Create button replacement */
 
   --shadow-sketch: 2px 3px 0px rgba(45, 45, 45, 0.2);
   --radius-sketch: 255px 15px 225px 15px / 15px 225px 15px 255px;
   --radius-sketch-sm: 25px 2px 20px 3px / 3px 20px 3px 25px;
-  
+
   --animate-scribble: scribble 0.4s steps(10) infinite alternate;
-  
+
   @keyframes scribble {
-    0% { transform: rotate(-0.5deg) scale(1); }
-    100% { transform: rotate(0.5deg) scale(1.02); }
+    0% {
+      transform: rotate(-0.5deg) scale(1);
+    }
+
+    100% {
+      transform: rotate(0.5deg) scale(1.02);
+    }
   }
 
   @keyframes draw-stroke {
-    to { stroke-dashoffset: 0; }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
 }
 
@@ -40,9 +48,9 @@ body {
   font-family: var(--font-hand);
   overflow: hidden;
   height: 100vh;
-  background-image: 
-    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
-    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
@@ -61,12 +69,18 @@ body::before {
 
 /* Utility Classes for Sketchy Aesthetic */
 .bg-pattern {
-    background-color: transparent; /* Override old style */
-    background-image: none;
+  background-color: transparent;
+  /* Override old style */
+  background-image: none;
 }
 
-.font-hand { font-family: var(--font-hand); }
-.font-marker { font-family: var(--font-marker); }
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+.font-marker {
+  font-family: var(--font-marker);
+}
 
 .border-sketch {
   border: 2px solid var(--color-ink);
@@ -109,11 +123,12 @@ body::before {
 
 /* Card/Container Style Re-imagined */
 .gartic-card {
-  background: white; /* Or paper color if we want transparency */
+  background: white;
+  /* Or paper color if we want transparency */
   border: 2px solid var(--color-ink);
   border-radius: var(--radius-sketch);
   padding: 20px;
-  box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+  box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -126,9 +141,10 @@ body::before {
   font-family: var(--font-hand);
   font-size: 1.1rem;
   outline: none;
-  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease;
-  width: 100%; /* Ensure full width usually */
+  width: 100%;
+  /* Ensure full width usually */
 }
 
 .gartic-input:focus {
@@ -141,44 +157,44 @@ body::before {
 /* New Classes for App.tsx replacement */
 
 .sketch-title {
-    font-family: var(--font-marker);
-    color: var(--color-ink);
-    text-shadow: 3px 3px 0px var(--color-pastel-pink);
-    transform: rotate(-2deg);
-    letter-spacing: 2px;
+  font-family: var(--font-marker);
+  color: var(--color-ink);
+  text-shadow: 3px 3px 0px var(--color-pastel-pink);
+  transform: rotate(-2deg);
+  letter-spacing: 2px;
 }
 
 .sketch-modal {
-    background: var(--color-paper);
-    border: 3px solid var(--color-ink);
-    border-radius: var(--radius-sketch);
-    box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
-    padding: 2rem;
+  background: var(--color-paper);
+  border: 3px solid var(--color-ink);
+  border-radius: var(--radius-sketch);
+  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
 }
 
 .room-item {
-    padding: 12px;
-    margin-bottom: 8px;
-    border: 2px solid var(--color-ink);
-    border-radius: var(--radius-sketch-sm);
-    background: white;
-    cursor: pointer;
-    transition: all 0.2s steps(3);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sketch-sm);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s steps(3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .room-item:hover {
-    transform: scale(1.02) rotate(-0.5deg);
-    box-shadow: 3px 3px 0px var(--color-pastel-blue);
+  transform: scale(1.02) rotate(-0.5deg);
+  box-shadow: 3px 3px 0px var(--color-pastel-blue);
 }
 
 .room-item.selected {
-    background: var(--color-pastel-blue);
-    border-color: var(--color-ink);
-    box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
-    transform: scale(0.98);
+  background: var(--color-pastel-blue);
+  border-color: var(--color-ink);
+  box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.1);
+  transform: scale(0.98);
 }
 
 /* Scrollbar */
@@ -199,4 +215,79 @@ body::before {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-ink);
+}
+
+/* Connecting Animation */
+@keyframes loading-dots {
+  0% {
+    content: "";
+  }
+
+  25% {
+    content: ".";
+  }
+
+  50% {
+    content: "..";
+  }
+
+  75% {
+    content: "...";
+  }
+
+  100% {
+    content: "";
+  }
+}
+
+@keyframes text-jitter {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  25% {
+    transform: rotate(-2deg) scale(1.05);
+  }
+
+  50% {
+    transform: rotate(1deg) scale(0.95);
+  }
+
+  75% {
+    transform: rotate(2deg) scale(1.02);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.connecting-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-paper);
+  flex-direction: column;
+}
+
+.connecting-text {
+  font-family: var(--font-marker);
+  font-size: 4rem;
+  color: var(--color-ink);
+  position: relative;
+  display: inline-block;
+  animation: text-jitter 0.4s steps(2) infinite alternate;
+  text-shadow: 3px 3px 0px var(--color-pastel-mint);
+}
+
+.connecting-text::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  width: 1.5em;
+  /* Reserve space for dots */
+  text-align: left;
+  animation: loading-dots 1.5s steps(1) infinite;
 }

@@ -103,7 +103,11 @@ function App() {
   }
 
   if (!isConnected) {
-    return <div className="h-screen w-screen flex items-center justify-center font-bold text-xl font-hand text-ink">CONNECTING...</div>;
+    return (
+      <div className="connecting-container">
+        <div className="connecting-text">CONNECTING</div>
+      </div>
+    );
   }
 
   return (
