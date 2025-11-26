@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background: Paper texture color with sketchy border -->
+  <rect x="10" y="10" width="492" height="492" rx="100" ry="100" fill="#fdfbf7" stroke="#2d2d2d" stroke-width="12" stroke-dasharray="20 10" stroke-linecap="round" />
+  
+  <!-- Scribble Background Effect -->
+  <path d="M60 256 Q 128 100 256 100 T 452 256 T 256 412 T 60 256" fill="none" stroke="#fff4bd" stroke-width="40" stroke-opacity="0.5" stroke-linecap="round" />
+
+  <!-- Pencil Body -->
+  <g transform="translate(256, 256) rotate(-45) translate(-256, -256)">
+    <!-- Eraser -->
+    <path d="M206 100 L306 100 L306 160 L206 160 Z" fill="#ffb7b2" stroke="#2d2d2d" stroke-width="8" stroke-linejoin="round" />
+    
+    <!-- Metal Band -->
+    <path d="M206 160 L306 160 L306 190 L206 190 Z" fill="#b2f7ef" stroke="#2d2d2d" stroke-width="8" stroke-linejoin="round" />
+    
+    <!-- Main Body -->
+    <path d="M206 190 L306 190 L306 350 L206 350 Z" fill="#fff4bd" stroke="#2d2d2d" stroke-width="8" stroke-linejoin="round" />
+    
+    <!-- Wood Tip -->
+    <path d="M206 350 L306 350 L256 412 Z" fill="#e2b2ff" stroke="#2d2d2d" stroke-width="8" stroke-linejoin="round" />
+    
+    <!-- Lead Point -->
+    <path d="M240 392 L272 392 L256 412 Z" fill="#2d2d2d" />
+  </g>
+
+  <!-- Dynamic Scribble Line -->
+  <path d="M150 400 Q 200 450 300 400 T 450 350" fill="none" stroke="#2d2d2d" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
