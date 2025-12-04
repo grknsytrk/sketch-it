@@ -106,6 +106,24 @@ export const IconEraser: React.FC<IconProps> = (props) => (
     </SketchIcon>
 );
 
+export const IconTarget: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Outer circle */}
+        <circle cx="12" cy="12" r="10" />
+        {/* Middle circle */}
+        <circle cx="12" cy="12" r="6" />
+        {/* Inner circle */}
+        <circle cx="12" cy="12" r="2" />
+    </SketchIcon>
+);
+
+export const IconChat: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Chat bubble */}
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </SketchIcon>
+);
+
 export const IconRefresh: React.FC<IconProps> = (props) => (
     <SketchIcon {...props}>
         <path d="M23 4v6h-6" />

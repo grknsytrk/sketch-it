@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useGameStore } from '../store/useGameStore';
-import { IconCrown } from './Icons';
+import { IconCrown, IconTarget, IconChat } from './Icons';
 
 const Chat: React.FC = () => {
     const { gameState, sendMessage, myPlayerId } = useGameStore();
@@ -77,20 +77,20 @@ const Chat: React.FC = () => {
                     <button
                         onClick={() => setActiveTab('answer')}
                         className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all ${activeTab === 'answer'
-                                ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
-                                : 'text-gray-400 hover:text-gray-600'
+                            ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
+                            : 'text-gray-400 hover:text-gray-600'
                             }`}
                     >
-                        🎯 ANSWER
+                        <IconTarget size={14} className="inline-block mr-1 -mt-0.5" /> ANSWER
                     </button>
                     <button
                         onClick={() => setActiveTab('chat')}
                         className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all ${activeTab === 'chat'
-                                ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
-                                : 'text-gray-400 hover:text-gray-600'
+                            ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
+                            : 'text-gray-400 hover:text-gray-600'
                             }`}
                     >
-                        💬 CHAT
+                        <IconChat size={14} className="inline-block mr-1 -mt-0.5" /> CHAT
                     </button>
                 </div>
             </div>
@@ -123,7 +123,7 @@ const Chat: React.FC = () => {
                         <div key={idx} className={`text-sm font-hand leading-[30px] px-2 rounded ${msg.isSystemMessage ? 'font-bold' : ''} ${bgClass}`}>
                             {!msg.isSystemMessage && (
                                 <span className="font-bold text-ink mr-1 font-marker">
-                                    {isChatMsg && <span className="text-blue-500">💬 </span>}
+                                    {isChatMsg && <IconChat size={12} className="inline-block mr-1 text-blue-500" />}
                                     {msg.sender}:
                                 </span>
                             )}
