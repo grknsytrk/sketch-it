@@ -7,23 +7,23 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
     strokeWidth?: number;
 }
 
-const SketchIcon: React.FC<IconProps> = ({ 
-    size = 24, 
-    color = "currentColor", 
+const SketchIcon: React.FC<IconProps> = ({
+    size = 24,
+    color = "currentColor",
     strokeWidth = 2.5, // Thicker strokes for marker feel
-    className, 
+    className,
     children,
-    ...props 
+    ...props
 }) => (
-    <svg 
-        width={size} 
-        height={size} 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke={color} 
-        strokeWidth={strokeWidth} 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className={className}
         {...props}
     >
@@ -43,7 +43,7 @@ export const IconPencil: React.FC<IconProps> = (props) => (
         {/* Pencil body */}
         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
         {/* Tip line */}
-        <path d="M15 5l3 3" /> 
+        <path d="M15 5l3 3" />
         {/* Squiggle at tip to imply drawing */}
         <path d="M9 18c-1 1-3 2-4 2s-2-2-2-3" strokeWidth={1.5} opacity={0.6} />
     </SketchIcon>
@@ -94,6 +94,15 @@ export const IconX: React.FC<IconProps> = (props) => (
     <SketchIcon {...props}>
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
+    </SketchIcon>
+);
+
+export const IconEraser: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Eraser block */}
+        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z" />
+        {/* Detail line */}
+        <path d="M17 17L7 7" />
     </SketchIcon>
 );
 

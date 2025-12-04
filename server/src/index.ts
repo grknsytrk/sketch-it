@@ -118,6 +118,14 @@ const endRound = (game: GameState, roomId: string) => {
     }
 
     // Reveal word to everyone
+    game.messages.push({
+        sender: 'System',
+        text: `Round ended! The word was: ${game.currentWord}`,
+        timestamp: Date.now(),
+        isSystemMessage: true,
+        color: 'green'
+    });
+
     io.to(roomId).emit('roundEnd', {
         word: game.currentWord,
         scores: game.players.map(p => ({ name: p.name, score: p.score }))
@@ -573,6 +581,12 @@ io.on('connection', (socket) => {
         // Check if it's a correct guess
         // Robust check: Compare IDs, not just indices
         const isDrawer = game.players[game.currentDrawer].id === player.id;
+
+        // Prevent drawer from typing the answer
+        if (game.gameStarted && isDrawer && game.currentWord && message.trim().toLowerCase() === game.currentWord.toLowerCase()) {
+            socket.emit('error', 'You cannot type the answer while drawing!');
+            return;
+        }
 
         if (game.currentWord &&
             game.gameStarted &&

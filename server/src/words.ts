@@ -111,8 +111,10 @@ export const WORD_CATEGORIES = {
         'car', 'bus', 'truck', 'van', 'taxi', 'police car', 'ambulance', 'fire truck',
         'bicycle', 'bike', 'motorcycle', 'scooter', 'skateboard', 'train', 'subway', 'tram',
         'plane', 'airplane', 'helicopter', 'rocket', 'ufo', 'boat', 'ship', 'yacht',
-        'submarine', 'tractor', 'tank',
+        'submarine', 'tractor', 'tank'
+    ],
 
+    movies: [
         'pulp fiction', 'fight club', 'forrest gump', 'lion king', 'shrek', 'toy story',
         'finding nemo', 'frozen', 'cars', 'minions', 'despicable me', 'kung fu panda',
         'how to train your dragon', 'spider man', 'batman', 'superman', 'avengers', 'iron man',
@@ -132,6 +134,45 @@ export const WORD_CATEGORIES = {
         'lightsaber', 'wand', 'ring', 'infinity gauntlet', 'shield', 'hammer', 'batmobile',
         'delorean', 'hoverboard', 'proton pack', 'golden snitch', 'sorting hat', 'nimbus',
         'death star', 'millennium falcon', 'black pearl'
+    ],
+
+    anime: [
+        // Series
+        'naruto', 'one piece', 'dragon ball', 'bleach', 'demon slayer', 'attack on titan',
+        'my hero academia', 'hunter x hunter', 'fullmetal alchemist', 'death note',
+        'tokyo ghoul', 'sword art online', 'one punch man', 'jujutsu kaisen', 'chainsaw man',
+        'spy x family', 'blue lock', 'haikyuu', 'pokemon', 'digimon', 'sailor moon',
+        'neon genesis evangelion', 'cowboy bebop', 'spirited away', 'your name',
+        'jojos bizarre adventure', 'gintama', 'fairy tail', 'black clover', 'dr stone',
+        'fire force', 'soul eater', 'code geass', 'steins gate', 're zero', 'konosuba',
+        'overlord', 'that time i got reincarnated as a slime', 'shield hero', 'mushoku tensei',
+        'vinland saga', 'berserk', 'akira', 'ghost in the shell', 'princess mononoke',
+        'howls moving castle', 'totoro', 'ponyo', 'kikis delivery service',
+
+        // Characters
+        'goku', 'vegeta', 'luffy', 'zoro', 'nami', 'sanji', 'chopper', 'naruto', 'sasuke',
+        'sakura', 'kakashi', 'ichigo', 'tanjiro', 'nezuko', 'zenitsu', 'inosuke', 'eren',
+        'mikasa', 'levi', 'deku', 'bakugo', 'todoroki', 'all might', 'gon', 'killua',
+        'hisoka', 'edward elric', 'alphonse', 'light yagami', 'l', 'ryuk', 'saitama',
+        'genos', 'kaneki', 'kirito', 'asuna', 'rem', 'ram', 'subaru', 'emilia',
+        'rimuru', 'ainz', 'albedo', 'shalltear', 'aqua', 'megumin', 'darkness', 'kazuma',
+        'anya', 'loid', 'yor', 'bond', 'denji', 'power', 'makima', 'aki', 'gojo',
+        'itadori', 'megumi', 'nobara', 'sukuna', 'yuta', 'maki', 'toge', 'panda',
+        'hinata', 'kageyama', 'oikawa', 'nishinoya', 'tsukishima', 'kuroko', 'kagami',
+        'aomine', 'midorima', 'kise', 'murasakibara', 'akashi', 'jotaro', 'dio',
+        'giorno', 'josuke', 'jonathan', 'joseph', 'jolyne', 'spike', 'faye', 'jet',
+        'ed', 'ein', 'motoko', 'batou', 'togusa', 'ash', 'pikachu', 'charizard',
+        'mewtwo', 'lucario', 'greninja', 'eevee', 'snorlax', 'jigglypuff', 'meowth',
+
+        // Terms & Items
+        'shuriken', 'kunai', 'katana', 'rasengan', 'chidori', 'kamehameha', 'spirit bomb',
+        'gum gum pistol', 'bankai', 'stand', 'nen', 'chakra', 'ki', 'mana', 'magic',
+        'alchemy', 'titan', 'ghoul', 'hero', 'villain', 'demon', 'slayer', 'pirate',
+        'marine', 'ninja', 'shinigami', 'hollow', 'arrancar', 'quincy', 'saiyan',
+        'super saiyan', 'devil fruit', 'grimoire', 'pokeball', 'pokedex', 'gym badge',
+        'dragon balls', 'death note', 'geass', 'evangelion', 'gundam', 'mecha',
+        'kaiju', 'isekai', 'waifu', 'husbando', 'senpai', 'kouhai', 'sensei',
+        'baka', 'kawaii', 'sugoi', 'nani', 'omae wa mou shindeiru'
     ],
 
     games: [

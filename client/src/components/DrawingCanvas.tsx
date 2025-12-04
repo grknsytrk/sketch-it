@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import type { DrawingAction } from '../../../server/src/types';
+import { IconEraser } from './Icons';
 
 interface DrawingCanvasProps {
     isDrawer: boolean;
@@ -202,6 +203,17 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                             className="w-24 accent-ink cursor-pointer"
                         />
                     </div>
+
+                    <div className="w-[1px] h-8 bg-gray-300 mx-2"></div>
+
+                    {/* Eraser */}
+                    <button
+                        onClick={() => setCurrentColor('#FFFFFF')}
+                        className={`p-1.5 rounded-lg border-2 transition-all ${currentColor === '#FFFFFF' ? 'border-ink bg-gray-200' : 'border-transparent hover:bg-gray-100 text-gray-500'}`}
+                        title="Eraser"
+                    >
+                        <IconEraser size={24} />
+                    </button>
 
                     <div className="w-[1px] h-8 bg-gray-300 mx-2"></div>
 
