@@ -3,8 +3,9 @@ import { useGameStore } from '../store/useGameStore';
 import { IconCrown } from './Icons';
 
 const Chat: React.FC = () => {
-    const { gameState, sendMessage } = useGameStore();
+    const { gameState, sendMessage, myPlayerId } = useGameStore();
     const [input, setInput] = useState('');
+    const [activeTab, setActiveTab] = useState<'answer' | 'chat'>('answer');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -15,10 +16,15 @@ const Chat: React.FC = () => {
         scrollToBottom();
     }, [gameState?.messages]);
 
+    // Check if current player is the drawer
+    const isDrawer = gameState?.players[gameState.currentDrawer]?.id === myPlayerId;
+
     const handleSend = (e: React.FormEvent) => {
         e.preventDefault();
         if (input.trim()) {
-            sendMessage(input);
+            // If in chat mode, prefix with [CHAT] so server can differentiate
+            const message = activeTab === 'chat' ? `[CHAT] ${input}` : input;
+            sendMessage(message);
             setInput('');
         }
     };
@@ -26,10 +32,13 @@ const Chat: React.FC = () => {
     // Helper to parse text and replace emojis with icons
     const parseMessageContent = (text: string) => {
         if (!text) return null;
-        
+
+        // Remove [CHAT] prefix for display
+        const displayText = text.replace(/^\[CHAT\]\s*/, '');
+
         // Split by the crown emoji
-        const parts = text.split('👑');
-        if (parts.length === 1) return text;
+        const parts = displayText.split('👑');
+        if (parts.length === 1) return displayText;
 
         return (
             <span className="inline-flex items-center flex-wrap gap-1 align-bottom">
@@ -47,14 +56,43 @@ const Chat: React.FC = () => {
         );
     };
 
+    // Filter messages based on active tab
+    const filteredMessages = gameState?.messages.filter(msg => {
+        if (activeTab === 'chat') {
+            // In chat tab, show only [CHAT] messages and system messages
+            return msg.text.startsWith('[CHAT]') || msg.isSystemMessage;
+        } else {
+            // In answer tab, show everything except [CHAT] messages
+            return !msg.text.startsWith('[CHAT]');
+        }
+    }) || [];
+
     if (!gameState) return null;
 
     return (
         <div className="flex flex-col h-full gartic-card p-0 overflow-hidden bg-white">
-            {/* Header */}
-            <div className="p-2 border-b-2 border-dashed border-gray-300 flex justify-between items-center bg-gray-50">
-                <span className="text-xs font-bold text-gray-500 font-marker">CHAT ROOM</span>
-                <span className="text-xs font-bold text-ink font-hand">{gameState.messages.length} msgs</span>
+            {/* Header with Tabs */}
+            <div className="border-b-2 border-dashed border-gray-300 bg-gray-50">
+                <div className="flex">
+                    <button
+                        onClick={() => setActiveTab('answer')}
+                        className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all ${activeTab === 'answer'
+                                ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
+                                : 'text-gray-400 hover:text-gray-600'
+                            }`}
+                    >
+                        🎯 ANSWER
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('chat')}
+                        className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all ${activeTab === 'chat'
+                                ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
+                                : 'text-gray-400 hover:text-gray-600'
+                            }`}
+                    >
+                        💬 CHAT
+                    </button>
+                </div>
             </div>
 
             {/* Messages Area */}
@@ -63,22 +101,31 @@ const Chat: React.FC = () => {
                 backgroundSize: '100% 30px',
                 backgroundAttachment: 'local'
             }}>
-                {gameState.messages.map((msg, idx) => {
+                {filteredMessages.map((msg, idx) => {
                     // Mesaj rengini belirle
                     let textColor = 'text-ink';
                     let bgClass = '';
-                    
+
                     if (msg.color === 'gold') {
                         textColor = 'text-yellow-700';
                         bgClass = 'bg-yellow-50 border border-yellow-200';
+                    } else if (msg.color === 'green') {
+                        textColor = 'text-green-600';
+                        bgClass = 'bg-green-50 border border-green-200';
                     } else if (msg.isSystemMessage) {
-                        textColor = 'text-green-600'; // System messages green
+                        textColor = 'text-green-600';
                     }
+
+                    // Check if it's a chat message
+                    const isChatMsg = msg.text.startsWith('[CHAT]');
 
                     return (
                         <div key={idx} className={`text-sm font-hand leading-[30px] px-2 rounded ${msg.isSystemMessage ? 'font-bold' : ''} ${bgClass}`}>
                             {!msg.isSystemMessage && (
-                                <span className="font-bold text-ink mr-1 font-marker">{msg.sender}:</span>
+                                <span className="font-bold text-ink mr-1 font-marker">
+                                    {isChatMsg && <span className="text-blue-500">💬 </span>}
+                                    {msg.sender}:
+                                </span>
                             )}
                             <span className={textColor}>
                                 {parseMessageContent(msg.text)}
@@ -96,10 +143,18 @@ const Chat: React.FC = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     className="gartic-input flex-1 text-sm bg-white"
-                    placeholder="Type here..."
+                    placeholder={activeTab === 'answer'
+                        ? (isDrawer ? "You're drawing!" : "Type your guess...")
+                        : "Chat with others..."
+                    }
+                    disabled={activeTab === 'answer' && isDrawer && gameState.gameStarted && !!gameState.currentWord}
                 />
-                <button type="submit" className="gartic-btn text-sm px-4 py-1">
-                    SEND
+                <button
+                    type="submit"
+                    className={`gartic-btn text-sm px-4 py-1 ${activeTab === 'chat' ? 'bg-blue-100' : ''}`}
+                    disabled={activeTab === 'answer' && isDrawer && gameState.gameStarted && !!gameState.currentWord}
+                >
+                    {activeTab === 'answer' ? 'GUESS' : 'SEND'}
                 </button>
             </form>
         </div>
