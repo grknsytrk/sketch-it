@@ -291,3 +291,50 @@ body::before {
   text-align: left;
   animation: loading-dots 1.5s steps(1) infinite;
 }
+
+/* Tab Switch Animations */
+@keyframes tab-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(10px) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+@keyframes tab-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tab-content {
+  animation: tab-fade-in 0.25s ease-out;
+}
+
+.tab-indicator {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Message enter animation */
+@keyframes message-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(5px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.message-enter {
+  animation: message-pop 0.2s ease-out;
+}

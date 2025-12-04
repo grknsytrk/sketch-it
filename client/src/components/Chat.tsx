@@ -72,12 +72,20 @@ const Chat: React.FC = () => {
     return (
         <div className="flex flex-col h-full gartic-card p-0 overflow-hidden bg-white">
             {/* Header with Tabs */}
-            <div className="border-b-2 border-dashed border-gray-300 bg-gray-50">
-                <div className="flex">
+            <div className="border-b-2 border-dashed border-gray-300 bg-gray-50 relative">
+                <div className="flex relative">
+                    {/* Sliding indicator */}
+                    <div
+                        className="absolute bottom-0 h-0.5 bg-ink tab-indicator"
+                        style={{
+                            width: '50%',
+                            left: activeTab === 'answer' ? '0%' : '50%'
+                        }}
+                    />
                     <button
                         onClick={() => setActiveTab('answer')}
-                        className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all ${activeTab === 'answer'
-                            ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
+                        className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all duration-200 ${activeTab === 'answer'
+                            ? 'text-ink'
                             : 'text-gray-400 hover:text-gray-600'
                             }`}
                     >
@@ -85,8 +93,8 @@ const Chat: React.FC = () => {
                     </button>
                     <button
                         onClick={() => setActiveTab('chat')}
-                        className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all ${activeTab === 'chat'
-                            ? 'text-ink bg-white border-b-2 border-ink -mb-[2px]'
+                        className={`flex-1 py-2 px-3 text-xs font-bold font-marker transition-all duration-200 ${activeTab === 'chat'
+                            ? 'text-ink'
                             : 'text-gray-400 hover:text-gray-600'
                             }`}
                     >
@@ -96,7 +104,7 @@ const Chat: React.FC = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-2" style={{
+            <div key={activeTab} className="flex-1 overflow-y-auto p-3 space-y-2 tab-content" style={{
                 backgroundImage: 'repeating-linear-gradient(transparent, transparent 29px, #f0f0f0 30px)',
                 backgroundSize: '100% 30px',
                 backgroundAttachment: 'local'
