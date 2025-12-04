@@ -13,6 +13,17 @@ const io = new Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
+    },
+    // Performance optimizations
+    pingInterval: 10000,      // Ping every 10s (default 25s)
+    pingTimeout: 5000,        // Timeout after 5s (default 20s)
+    transports: ['websocket', 'polling'], // Prefer WebSocket
+    allowUpgrades: true,
+    perMessageDeflate: {      // Compression
+        threshold: 1024,      // Only compress messages > 1KB
+        zlibDeflateOptions: {
+            chunkSize: 16 * 1024
+        }
     }
 });
 

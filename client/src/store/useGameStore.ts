@@ -106,7 +106,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (get().socket) return;
 
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-        const socket = io(apiUrl);
+        const socket = io(apiUrl, {
+            transports: ['websocket'],  // Skip polling, use WebSocket directly
+            upgrade: false,              // Don't upgrade from polling
+            reconnectionDelay: 1000,     // Reconnect after 1s
+            reconnectionDelayMax: 5000,  // Max 5s between retries
+            timeout: 10000               // Connection timeout
+        });
 
         socket.on('connect', () => {
             set({ isConnected: true, myPlayerId: socket.id });

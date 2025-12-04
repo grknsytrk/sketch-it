@@ -246,7 +246,14 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
-                        className={`block w-full h-full ${isDrawer ? 'cursor-crosshair' : 'cursor-not-allowed'}`}
+                        className="block w-full h-full"
+                        style={{
+                            cursor: isDrawer
+                                ? (currentColor === '#FFFFFF'
+                                    ? `url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='white' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z'/%3E%3Cpath d='M17 17L7 7'/%3E%3C/svg%3E") 3 20, auto`
+                                    : 'crosshair')
+                                : 'not-allowed'
+                        }}
                     />
                 </div>
             </div>
