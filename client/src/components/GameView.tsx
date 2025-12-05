@@ -6,6 +6,7 @@ import WordSelection from './WordSelection';
 import Scoreboard from './Scoreboard';
 import Chat from './Chat';
 import GameOver from './GameOver';
+import { IconPalette, IconPaw, IconPizza, IconBox, IconStar, IconFilm, IconGamepad, IconBall } from './Icons';
 
 
 const GameView: React.FC = () => {
@@ -58,21 +59,21 @@ const GameView: React.FC = () => {
                 <div className="gartic-card p-3 flex items-center justify-between bg-white">
                     <div className="flex flex-col">
                         <span className="text-xs font-bold text-gray-400 font-hand uppercase">TOPIC</span>
-                        <h1 className="text-lg font-marker text-ink tracking-wider flex items-center gap-1">
+                        <h1 className="text-lg font-marker text-ink tracking-wider flex items-center gap-1.5">
                             {(() => {
-                                const themeEmojis: Record<string, string> = {
-                                    general: '🎨',
-                                    animals: '🐾',
-                                    food: '🍕',
-                                    objects: '📦',
-                                    anime: '🎌',
-                                    movies: '🎬',
-                                    games: '🎮',
-                                    sports: '⚽'
+                                const themeIcons: Record<string, React.ReactNode> = {
+                                    general: <IconPalette size={18} />,
+                                    animals: <IconPaw size={18} />,
+                                    food: <IconPizza size={18} />,
+                                    objects: <IconBox size={18} />,
+                                    anime: <IconStar size={18} />,
+                                    movies: <IconFilm size={18} />,
+                                    games: <IconGamepad size={18} />,
+                                    sports: <IconBall size={18} />
                                 };
-                                const emoji = themeEmojis[gameState.theme] || '🎨';
+                                const icon = themeIcons[gameState.theme] || <IconPalette size={18} />;
                                 const themeName = gameState.theme.charAt(0).toUpperCase() + gameState.theme.slice(1);
-                                return `${emoji} ${themeName}`;
+                                return <>{icon} {themeName}</>;
                             })()}
                         </h1>
                     </div>

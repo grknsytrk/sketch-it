@@ -12,9 +12,7 @@ const Scoreboard: React.FC = () => {
 
     const handleKick = (playerId: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        if (window.confirm('Are you sure you want to kick this player?')) {
-            kickPlayer(playerId);
-        }
+        kickPlayer(playerId);
     };
 
     return (

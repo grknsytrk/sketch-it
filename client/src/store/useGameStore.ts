@@ -151,6 +151,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get().showNotification(msg, 'error');
         });
 
+        // Listen for kick event - clear gameState and return to lobby
+        socket.on('kicked', ({ message }: { message: string }) => {
+            set({ gameState: null });
+            get().showNotification(message, 'error');
+        });
+
         socket.on('draw', (action: DrawingAction) => {
             set((state) => {
                 if (!state.gameState) return state;

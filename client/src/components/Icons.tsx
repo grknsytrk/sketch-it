@@ -139,6 +139,88 @@ export const IconRefresh: React.FC<IconProps> = (props) => (
     </SketchIcon>
 );
 
+// Theme Icons
+export const IconPalette: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Palette body */}
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.7-.1 2.5-.3.3-.1.5-.4.5-.7v-2c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5v2c0 .3.2.6.5.7.8.2 1.6.3 2.5.3 1.1 0 2-.9 2-2 0-5.5-4.5-10-10-10z" />
+        {/* Paint dots */}
+        <circle cx="7" cy="10" r="1.5" fill="currentColor" />
+        <circle cx="10" cy="6" r="1.5" fill="currentColor" />
+        <circle cx="15" cy="7" r="1.5" fill="currentColor" />
+        <circle cx="7" cy="14" r="1.5" fill="currentColor" />
+    </SketchIcon>
+);
 
+export const IconPaw: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Main pad */}
+        <ellipse cx="12" cy="15" rx="4" ry="3.5" />
+        {/* Toe beans */}
+        <circle cx="7" cy="10" r="2" />
+        <circle cx="17" cy="10" r="2" />
+        <circle cx="9" cy="6" r="1.8" />
+        <circle cx="15" cy="6" r="1.8" />
+    </SketchIcon>
+);
 
+export const IconPizza: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Pizza slice */}
+        <path d="M12 2L3 20h18L12 2z" />
+        {/* Toppings */}
+        <circle cx="10" cy="14" r="1.5" fill="currentColor" />
+        <circle cx="14" cy="12" r="1.5" fill="currentColor" />
+        <circle cx="12" cy="17" r="1.5" fill="currentColor" />
+        {/* Crust detail */}
+        <path d="M5 18h14" strokeWidth={1.5} opacity={0.5} />
+    </SketchIcon>
+);
 
+export const IconBox: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Box body */}
+        <path d="M21 8v13H3V8" />
+        <path d="M1 3h22v5H1z" />
+        {/* Center line */}
+        <path d="M10 12h4" />
+    </SketchIcon>
+);
+
+export const IconStar: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Star shape */}
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </SketchIcon>
+);
+
+export const IconFilm: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Film strip */}
+        <rect x="2" y="2" width="20" height="20" rx="2" />
+        {/* Holes */}
+        <path d="M7 2v20M17 2v20" />
+        <path d="M2 7h5M17 7h5M2 12h5M17 12h5M2 17h5M17 17h5" strokeWidth={1.5} />
+    </SketchIcon>
+);
+
+export const IconGamepad: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Controller body */}
+        <path d="M6 11h4M8 9v4" /> {/* D-pad */}
+        <circle cx="17" cy="10" r="1" fill="currentColor" />
+        <circle cx="15" cy="12" r="1" fill="currentColor" />
+        {/* Body outline */}
+        <path d="M17 4H7a5 5 0 0 0-5 5v6a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V9a5 5 0 0 0-5-5z" />
+    </SketchIcon>
+);
+
+export const IconBall: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Ball */}
+        <circle cx="12" cy="12" r="10" />
+        {/* Pattern lines */}
+        <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
+        <path d="M2 12h20" />
+    </SketchIcon>
+);

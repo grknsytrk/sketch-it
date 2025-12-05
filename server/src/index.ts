@@ -443,10 +443,10 @@ io.on('connection', (socket) => {
             game.currentDrawer = playerIndex % Math.max(1, game.players.length);
         }
 
-        // Notify the kicked player
+        // Notify the kicked player with dedicated event
         const kickedSocket = io.sockets.sockets.get(playerId);
         if (kickedSocket) {
-            kickedSocket.emit('error', 'You have been kicked from the room');
+            kickedSocket.emit('kicked', { message: 'You have been kicked from the room' });
             kickedSocket.leave(roomId);
         }
 

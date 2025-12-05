@@ -3,7 +3,7 @@ import { useGameStore } from './store/useGameStore';
 import GameView from './components/GameView';
 import Notification from './components/Notification';
 import SettingsMenu from './components/SettingsMenu';
-import { IconLock, IconRefresh } from './components/Icons';
+import { IconLock, IconRefresh, IconPalette, IconPaw, IconPizza, IconBox, IconStar, IconFilm, IconGamepad, IconBall } from './components/Icons';
 
 function App() {
   const { connect, isConnected, joinRoom, gameState, rooms, notification, clearNotification, getRooms, showNotification } = useGameStore();
@@ -300,21 +300,21 @@ function App() {
                       <span className="text-sm text-gray-500 font-hand">
                         {room.gameStarted ? 'In Game' : 'Lobby'} • {room.playerCount}/{room.maxPlayers}
                       </span>
-                      <span className="text-xs px-1.5 py-0.5 bg-gray-100 rounded font-hand text-gray-600 border border-gray-200">
+                      <span className="text-xs px-1.5 py-0.5 bg-gray-100 rounded font-hand text-gray-600 border border-gray-200 flex items-center gap-1">
                         {(() => {
-                          const themeEmojis: Record<string, string> = {
-                            general: '🎨',
-                            animals: '🐾',
-                            food: '🍕',
-                            objects: '📦',
-                            anime: '🎌',
-                            movies: '🎬',
-                            games: '🎮',
-                            sports: '⚽'
+                          const themeIcons: Record<string, React.ReactNode> = {
+                            general: <IconPalette size={12} />,
+                            animals: <IconPaw size={12} />,
+                            food: <IconPizza size={12} />,
+                            objects: <IconBox size={12} />,
+                            anime: <IconStar size={12} />,
+                            movies: <IconFilm size={12} />,
+                            games: <IconGamepad size={12} />,
+                            sports: <IconBall size={12} />
                           };
-                          const emoji = themeEmojis[room.theme] || '🎨';
+                          const icon = themeIcons[room.theme] || <IconPalette size={12} />;
                           const themeName = room.theme ? room.theme.charAt(0).toUpperCase() + room.theme.slice(1) : 'General';
-                          return `${emoji} ${themeName}`;
+                          return <>{icon} {themeName}</>;
                         })()}
                       </span>
                     </div>
