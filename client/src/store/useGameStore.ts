@@ -157,6 +157,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get().showNotification(message, 'error');
         });
 
+        // Listen for warning messages (e.g., typing answer in chat)
+        socket.on('warning', (message: string) => {
+            get().showNotification(message, 'info');
+        });
+
         socket.on('draw', (action: DrawingAction) => {
             set((state) => {
                 if (!state.gameState) return state;

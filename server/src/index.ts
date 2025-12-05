@@ -686,12 +686,36 @@ io.on('connection', (socket) => {
             return;
         }
 
+        // Check if it's a chat message (not a guess attempt)
+        const isChatMessage = message.startsWith('[CHAT]');
+        const actualMessage = isChatMessage ? message.replace('[CHAT] ', '') : message;
+
+        // If it's a chat message, handle separately
+        if (isChatMessage) {
+            // Check if chat message contains the correct answer
+            if (game.currentWord && game.gameStarted &&
+                actualMessage.toLowerCase().trim() === game.currentWord.toLowerCase()) {
+                // Send warning to the player - they might be giving away the answer
+                socket.emit('warning', '⚠️ Cevabı chat\'e yazdın! Bu kopya olarak sayılabilir.');
+            }
+
+            // Add chat message (not counted as a guess attempt)
+            const chatMsg: ChatMessage = {
+                sender: player.name,
+                text: message,
+                timestamp: Date.now()
+            };
+            game.messages.push(chatMsg);
+            broadcastGameState(roomId, game);
+            return;
+        }
+
         // Check if it's a correct guess
         // Robust check: Compare IDs, not just indices
         const isDrawer = game.players[game.currentDrawer].id === player.id;
 
         // Prevent drawer from typing the answer
-        if (game.gameStarted && isDrawer && game.currentWord && message.trim().toLowerCase() === game.currentWord.toLowerCase()) {
+        if (game.gameStarted && isDrawer && game.currentWord && actualMessage.trim().toLowerCase() === game.currentWord.toLowerCase()) {
             socket.emit('error', 'You cannot type the answer while drawing!');
             return;
         }
