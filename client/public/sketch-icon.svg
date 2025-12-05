@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Background canvas -->
+  <rect x="8" y="8" width="112" height="112" rx="16" fill="#FFF8F0" stroke="#2D2D2D" stroke-width="4"/>
+  
+  <!-- Pencil -->
+  <g transform="translate(24, 24) rotate(-15, 40, 40)">
+    <!-- Pencil body -->
+    <path d="M20 75L35 10L65 10L80 75Z" fill="#FFD93D" stroke="#2D2D2D" stroke-width="3"/>
+    <!-- Pencil tip -->
+    <path d="M35 10L50 0L65 10Z" fill="#2D2D2D"/>
+    <!-- Pencil band -->
+    <rect x="28" y="60" width="44" height="8" fill="#FF6B9D" stroke="#2D2D2D" stroke-width="2"/>
+    <!-- Eraser -->
+    <rect x="20" y="75" width="60" height="15" rx="2" fill="#FF9EAA" stroke="#2D2D2D" stroke-width="3"/>
+  </g>
+  
+  <!-- Sketch lines decoration -->
+  <path d="M95 90 Q100 85 105 90" stroke="#2D2D2D" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M90 100 Q98 95 106 100" stroke="#2D2D2D" stroke-width="2" fill="none" opacity="0.6"/>
+</svg>
