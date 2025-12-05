@@ -224,3 +224,13 @@ export const IconBall: React.FC<IconProps> = (props) => (
         <path d="M2 12h20" />
     </SketchIcon>
 );
+
+export const IconWarning: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* Triangle */}
+        <path d="M12 2L2 20h20L12 2z" />
+        {/* Exclamation mark */}
+        <path d="M12 9v5" strokeWidth={3} />
+        <circle cx="12" cy="17" r="1" fill="currentColor" />
+    </SketchIcon>
+);

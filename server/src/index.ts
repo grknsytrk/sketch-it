@@ -696,7 +696,7 @@ io.on('connection', (socket) => {
             if (game.currentWord && game.gameStarted &&
                 actualMessage.toLowerCase().trim() === game.currentWord.toLowerCase()) {
                 // Send warning to the player - they might be giving away the answer
-                socket.emit('warning', '⚠️ Cevabı chat\'e yazdın! Bu kopya olarak sayılabilir.');
+                socket.emit('warning', 'Cevabı chat\'e yazdın! Bu kopya olarak sayılabilir.');
             }
 
             // Add chat message (not counted as a guess attempt)
