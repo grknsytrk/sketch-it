@@ -42,19 +42,30 @@ function App() {
 
   // Auto-join when connected and have saved name
   useEffect(() => {
-    if (pendingAutoJoin && isConnected && !gameState) {
+    if (pendingAutoJoin && isConnected && !gameState && rooms.length > 0) {
       const savedName = localStorage.getItem('playerName');
       if (savedName) {
-        // Auto-join the room from URL
-        const customAvatar = '/assets/Es_line_sticker.webp';
-        joinRoom(pendingAutoJoin, savedName, undefined, undefined, undefined, undefined, customAvatar);
-        setPendingAutoJoin(null);
+        // Check if room exists and is locked
+        const targetRoom = rooms.find(r => r.roomId === pendingAutoJoin);
+
+        if (targetRoom?.isLocked) {
+          // Room is password protected - show password modal
+          setPlayerName(savedName);
+          setJoinRoomId(pendingAutoJoin);
+          setShowPasswordModal(true);
+          setPendingAutoJoin(null);
+        } else {
+          // Room is not locked or doesn't exist (will be created) - auto-join
+          const customAvatar = '/assets/Es_line_sticker.webp';
+          joinRoom(pendingAutoJoin, savedName, undefined, undefined, undefined, undefined, customAvatar);
+          setPendingAutoJoin(null);
+        }
       } else {
         // No saved name, just show the join form
         setPendingAutoJoin(null);
       }
     }
-  }, [pendingAutoJoin, isConnected, gameState, joinRoom]);
+  }, [pendingAutoJoin, isConnected, gameState, joinRoom, rooms]);
 
   // Update URL when game state changes
   useEffect(() => {
