@@ -1,4 +1,4 @@
-// Sound Manager for Game
+// Sound Manager for Game - Soft, Sketchy UI Sounds
 export class SoundManager {
     private sounds: Map<string, HTMLAudioElement> = new Map();
     private enabled: boolean = true;
@@ -8,61 +8,69 @@ export class SoundManager {
     }
 
     private initSounds() {
-        // Mixkit - Professional game sounds (Direct URLs)
-        // We will treat these as "base" sounds but vary their playback
+        // Soft, gentle sounds that match the pastel sketchbook aesthetic
+        // Using Pixabay and other free sound sources
         const soundUrls = {
-            // Correct guess - Better success sound
-            correct: 'https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3',
+            // Correct guess - Soft chime/ding
+            correct: 'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b49a6.mp3',
 
-            // Wrong guess - Error buzz
-            wrong: 'https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3',
+            // Wrong guess - Gentle error/boop (not harsh)
+            wrong: 'https://cdn.pixabay.com/audio/2022/03/10/audio_c8b8db8e28.mp3',
 
-            // Time warning - Clock tick (Slightly faster for tension)
-            tick: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
+            // Time warning - Soft tick (pencil tap on paper feel)
+            tick: 'https://cdn.pixabay.com/audio/2022/03/15/audio_942694cbd9.mp3',
 
-            // Game start - Positive notification
-            gameStart: 'https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3',
+            // Game start - Gentle positive notification
+            gameStart: 'https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3',
 
-            // Victory - Fanfare
-            victory: 'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3',
+            // Victory - Soft celebration (not too loud)
+            victory: 'https://cdn.pixabay.com/audio/2021/08/04/audio_c6ccf3232f.mp3',
 
-            // Word selected - Click/Pop
-            wordSelect: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3',
+            // Word selected - Soft pop/click
+            wordSelect: 'https://cdn.pixabay.com/audio/2022/03/15/audio_942694cbd9.mp3',
 
-            // Round end - Soft notification
-            roundEnd: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3',
+            // Round end - Gentle whoosh
+            roundEnd: 'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b49a6.mp3',
 
-            // Guess limit reached - Error/Warning (ONLY LOCAL)
-            guessLimitReached: 'https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3',
+            // Guess limit reached - Soft warning
+            guessLimitReached: 'https://cdn.pixabay.com/audio/2022/03/10/audio_c8b8db8e28.mp3',
 
-            // UI Click - Paper/Pen sound equivalent (using a short click for now, varied by pitch)
-            click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'
+            // UI Click - Paper/soft click
+            click: 'https://cdn.pixabay.com/audio/2022/03/15/audio_942694cbd9.mp3',
+
+            // New message - Soft notification
+            message: 'https://cdn.pixabay.com/audio/2022/03/15/audio_942694cbd9.mp3',
+
+            // Player join - Soft pop
+            playerJoin: 'https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3',
+
+            // Player leave - Soft woosh down
+            playerLeave: 'https://cdn.pixabay.com/audio/2022/03/10/audio_c8b8db8e28.mp3'
         };
 
         // Preload all sounds
         Object.entries(soundUrls).forEach(([name, url]) => {
             const audio = new Audio(url);
             audio.preload = 'auto';
-            audio.volume = 0.5; // Default volume
+            audio.volume = 0.3; // Lower default volume for softer feel
             this.sounds.set(name, audio);
         });
     }
 
-    play(soundName: string, volume: number = 0.5) {
+    play(soundName: string, volume: number = 0.3) {
         if (!this.enabled) return;
 
         const sound = this.sounds.get(soundName);
         if (sound) {
             // Clone to allow overlapping sounds
             const clone = sound.cloneNode() as HTMLAudioElement;
-            clone.volume = Math.min(1, Math.max(0, volume * 0.5)); // Reduce global volume by 50%
 
-            // ORGANIC FEEL: Randomize playback rate slightly (0.8 - 1.0)
-            // Lower pitch sounds softer and less "alert-like"
-            const randomRate = 0.8 + Math.random() * 0.2;
+            // Keep volume soft (max 40% of system volume)
+            clone.volume = Math.min(0.4, Math.max(0, volume * 0.4));
+
+            // Slight pitch variation for organic feel
+            const randomRate = 0.95 + Math.random() * 0.1; // 0.95 - 1.05
             clone.playbackRate = randomRate;
-
-            // Needed for some browsers to handle rapid playback
             clone.preservesPitch = false;
 
             clone.play().catch(err => {
@@ -85,7 +93,7 @@ export class SoundManager {
 
     setVolume(volume: number) {
         this.sounds.forEach(sound => {
-            sound.volume = Math.max(0, Math.min(1, volume));
+            sound.volume = Math.max(0, Math.min(0.4, volume * 0.4)); // Max 40%
         });
     }
 }
