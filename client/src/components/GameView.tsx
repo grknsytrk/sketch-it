@@ -56,7 +56,26 @@ const GameView: React.FC = () => {
             {/* Left Sidebar: Scoreboard */}
             <div className="w-64 flex-shrink-0 flex flex-col gap-4">
                 <div className="gartic-card p-3 flex items-center justify-between bg-white">
-                    <h1 className="text-xl font-marker text-ink tracking-wider">SKETCH IT!</h1>
+                    <div className="flex flex-col">
+                        <span className="text-xs font-bold text-gray-400 font-hand uppercase">TOPIC</span>
+                        <h1 className="text-lg font-marker text-ink tracking-wider flex items-center gap-1">
+                            {(() => {
+                                const themeEmojis: Record<string, string> = {
+                                    general: '🎨',
+                                    animals: '🐾',
+                                    food: '🍕',
+                                    objects: '📦',
+                                    anime: '🎌',
+                                    movies: '🎬',
+                                    games: '🎮',
+                                    sports: '⚽'
+                                };
+                                const emoji = themeEmojis[gameState.theme] || '🎨';
+                                const themeName = gameState.theme.charAt(0).toUpperCase() + gameState.theme.slice(1);
+                                return `${emoji} ${themeName}`;
+                            })()}
+                        </h1>
+                    </div>
                     <span className="text-xs font-bold text-gray-400 font-hand">TARGET: {gameState.maxScore}</span>
                     <button
                         onClick={leaveRoom}

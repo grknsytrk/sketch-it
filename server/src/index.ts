@@ -88,7 +88,8 @@ const broadcastRoomList = () => {
             maxPlayers: game.maxPlayers,
             maxScore: game.maxScore,
             gameStarted: game.gameStarted,
-            isLocked: !!game.password
+            isLocked: !!game.password,
+            theme: game.theme
         });
     });
     io.emit('roomListUpdate', roomList);
@@ -263,7 +264,8 @@ io.on('connection', (socket) => {
                 maxPlayers: game.maxPlayers,
                 maxScore: game.maxScore,
                 gameStarted: game.gameStarted,
-                isLocked: !!game.password
+                isLocked: !!game.password,
+                theme: game.theme
             });
         });
         socket.emit('roomListUpdate', roomList);
@@ -392,6 +394,101 @@ io.on('connection', (socket) => {
 
         game.players.splice(botIndex, 1);
         game.players.forEach((p: Player, idx: number) => p.index = idx);
+
+        broadcastGameState(roomId, game);
+        broadcastRoomList();
+    });
+
+    // Kick player functionality
+    socket.on('kickPlayer', ({ roomId, playerId }: { roomId: string, playerId: string }) => {
+        const game = games.get(roomId);
+        if (!game) return;
+
+        // Only room creator can kick
+        if (socket.id !== game.roomCreatorId) {
+            socket.emit('error', 'Only room creator can kick players');
+            return;
+        }
+
+        // Can't kick yourself
+        if (playerId === socket.id) {
+            socket.emit('error', 'You cannot kick yourself');
+            return;
+        }
+
+        const playerIndex = game.players.findIndex((p: Player) => p.id === playerId);
+        if (playerIndex === -1) {
+            socket.emit('error', 'Player not found');
+            return;
+        }
+
+        const kickedPlayer = game.players[playerIndex];
+        const wasDrawer = playerIndex === game.currentDrawer;
+
+        // Remove player
+        game.players.splice(playerIndex, 1);
+        game.players.forEach((p: Player, idx: number) => p.index = idx);
+
+        // Clean up correctGuessers
+        game.correctGuessers = game.correctGuessers.filter(id => id !== playerId);
+
+        // Handle currentDrawer adjustment
+        if (playerIndex < game.currentDrawer) {
+            game.currentDrawer--;
+        } else if (wasDrawer && game.gameStarted && game.currentWord) {
+            // If drawer was kicked during active round, end it
+            game.currentDrawer = playerIndex > 0 ? playerIndex - 1 : game.players.length - 1;
+            endRound(game, roomId);
+        } else if (wasDrawer) {
+            game.currentDrawer = playerIndex % Math.max(1, game.players.length);
+        }
+
+        // Notify the kicked player
+        const kickedSocket = io.sockets.sockets.get(playerId);
+        if (kickedSocket) {
+            kickedSocket.emit('error', 'You have been kicked from the room');
+            kickedSocket.leave(roomId);
+        }
+
+        // Add system message
+        const kickMsg: ChatMessage = {
+            sender: 'System',
+            text: `${kickedPlayer.name} was kicked from the room`,
+            timestamp: Date.now(),
+            isSystemMessage: true
+        };
+        game.messages.push(kickMsg);
+
+        // Check if game should end (less than 2 players)
+        if (game.gameStarted && game.players.length < 2) {
+            game.gameStarted = false;
+            game.drawingData = [];
+            game.currentWord = '';
+            game.wordHint = '';
+            game.roundEndTime = undefined;
+            game.selectionEndTime = undefined;
+
+            io.to(roomId).emit('clearCanvas');
+
+            io.to(roomId).emit('gameEnd', {
+                scores: game.players.map(p => ({ name: p.name, score: p.score }))
+            });
+
+            const host = game.players.find(p => p.id === game.roomCreatorId);
+            const hostName = host ? host.name : 'Host';
+
+            game.messages.push({
+                sender: 'System',
+                text: `Game ended (not enough players). ${hostName} can type /start to play again!`,
+                timestamp: Date.now(),
+                isSystemMessage: true,
+                color: 'gold'
+            });
+
+            game.players.forEach(p => p.score = 0);
+            game.roundNumber = 0;
+            game.currentDrawer = 0;
+        }
 
         broadcastGameState(roomId, game);
         broadcastRoomList();

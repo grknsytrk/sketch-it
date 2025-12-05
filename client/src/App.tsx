@@ -25,15 +25,36 @@ function App() {
     connect();
   }, [connect]);
 
-  // Handle URL routing
+  // State to track if we should auto-join
+  const [pendingAutoJoin, setPendingAutoJoin] = useState<string | null>(null);
+
+  // Handle URL routing - check for room in URL
   useEffect(() => {
     // Check URL on load
     const path = window.location.pathname.substring(1); // Remove leading slash
     if (path && path.length > 0) {
       setJoinRoomId(path);
       setActiveTab('join');
+      // Mark for auto-join attempt
+      setPendingAutoJoin(path);
     }
   }, []);
+
+  // Auto-join when connected and have saved name
+  useEffect(() => {
+    if (pendingAutoJoin && isConnected && !gameState) {
+      const savedName = localStorage.getItem('playerName');
+      if (savedName) {
+        // Auto-join the room from URL
+        const customAvatar = '/assets/Es_line_sticker.webp';
+        joinRoom(pendingAutoJoin, savedName, undefined, undefined, undefined, undefined, customAvatar);
+        setPendingAutoJoin(null);
+      } else {
+        // No saved name, just show the join form
+        setPendingAutoJoin(null);
+      }
+    }
+  }, [pendingAutoJoin, isConnected, gameState, joinRoom]);
 
   // Update URL when game state changes
   useEffect(() => {
@@ -275,9 +296,28 @@ function App() {
                 >
                   <div className="flex flex-col">
                     <span className="font-bold text-ink font-marker text-lg">{room.roomId}</span>
-                    <span className="text-sm text-gray-500 font-hand">
-                      {room.gameStarted ? 'In Game' : 'Lobby'} • {room.playerCount}/{room.maxPlayers}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-500 font-hand">
+                        {room.gameStarted ? 'In Game' : 'Lobby'} • {room.playerCount}/{room.maxPlayers}
+                      </span>
+                      <span className="text-xs px-1.5 py-0.5 bg-gray-100 rounded font-hand text-gray-600 border border-gray-200">
+                        {(() => {
+                          const themeEmojis: Record<string, string> = {
+                            general: '🎨',
+                            animals: '🐾',
+                            food: '🍕',
+                            objects: '📦',
+                            anime: '🎌',
+                            movies: '🎬',
+                            games: '🎮',
+                            sports: '⚽'
+                          };
+                          const emoji = themeEmojis[room.theme] || '🎨';
+                          const themeName = room.theme ? room.theme.charAt(0).toUpperCase() + room.theme.slice(1) : 'General';
+                          return `${emoji} ${themeName}`;
+                        })()}
+                      </span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     {room.isLocked && (

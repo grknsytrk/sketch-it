@@ -99,10 +99,18 @@ export const IconX: React.FC<IconProps> = (props) => (
 
 export const IconEraser: React.FC<IconProps> = (props) => (
     <SketchIcon {...props}>
-        {/* Eraser block */}
-        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z" />
-        {/* Detail line */}
-        <path d="M17 17L7 7" />
+        {/* Eraser body - sketchy rectangular shape */}
+        <path d="M4 18h16c0.5 0 1-0.5 1-1V7c0-0.5-0.5-1-1-1H4c-0.5 0-1 0.5-1 1v10c0 0.5 0.5 1 1 1z" />
+        {/* Eraser grip lines - hand drawn feel */}
+        <path d="M7 8.5v7" strokeWidth={1.5} opacity={0.6} />
+        <path d="M10.5 8.5v7" strokeWidth={1.5} opacity={0.6} />
+        {/* Used edge marks - shows it's been used */}
+        <path d="M14 17c0.5-1 1-2 1.5-1.5" strokeWidth={1.5} opacity={0.4} />
+        <path d="M17 16.5c0.3-0.8 0.8-1.5 1.2-1" strokeWidth={1.5} opacity={0.4} />
+        {/* Eraser crumbs/dust for sketchy effect */}
+        <circle cx="15" cy="20" r="0.8" fill="currentColor" opacity={0.3} />
+        <circle cx="18" cy="19.5" r="0.5" fill="currentColor" opacity={0.3} />
+        <circle cx="16.5" cy="20.5" r="0.6" fill="currentColor" opacity={0.3} />
     </SketchIcon>
 );
 

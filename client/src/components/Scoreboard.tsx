@@ -1,13 +1,21 @@
 import React from 'react';
 import { useGameStore } from '../store/useGameStore';
-import { IconPencil, IconCheck, IconCrown } from './Icons';
+import { IconPencil, IconCheck, IconCrown, IconX } from './Icons';
 
 const Scoreboard: React.FC = () => {
-    const { gameState, myPlayerId } = useGameStore();
+    const { gameState, myPlayerId, kickPlayer } = useGameStore();
 
     if (!gameState) return null;
 
     const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
+    const isRoomCreator = gameState.roomCreatorId === myPlayerId;
+
+    const handleKick = (playerId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (window.confirm('Are you sure you want to kick this player?')) {
+            kickPlayer(playerId);
+        }
+    };
 
     return (
         <div className="w-64 flex flex-col gap-2 h-full overflow-y-auto pr-2">
@@ -15,11 +23,12 @@ const Scoreboard: React.FC = () => {
                 const isDrawer = player.index === gameState.currentDrawer;
                 const isMe = player.id === myPlayerId;
                 const hasGuessed = player.hasGuessed;
+                const canKick = isRoomCreator && !isMe;
 
                 return (
                     <div
                         key={player.id}
-                        className={`flex items-center p-2 border-2 transition-all relative
+                        className={`flex items-center p-2 border-2 transition-all relative group
                             ${isMe ? 'bg-white border-ink shadow-sketch' : 'border-transparent'}
                             ${hasGuessed && !isMe ? 'bg-green-50 border-green-200' : ''}
                         `}
@@ -73,6 +82,17 @@ const Scoreboard: React.FC = () => {
                                 {player.score} points
                             </div>
                         </div>
+
+                        {/* Kick Button - Only visible to room creator for other players */}
+                        {canKick && (
+                            <button
+                                onClick={(e) => handleKick(player.id, e)}
+                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-red-100 text-gray-400 hover:text-red-500 border border-transparent hover:border-red-300"
+                                title="Kick player"
+                            >
+                                <IconX size={14} strokeWidth={3} />
+                            </button>
+                        )}
                     </div>
                 );
             })}

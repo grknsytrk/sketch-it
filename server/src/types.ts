@@ -98,4 +98,5 @@ export interface RoomInfo {
     maxScore: number;
     gameStarted: boolean;
     isLocked: boolean;
+    theme: string;
 }

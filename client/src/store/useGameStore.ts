@@ -66,6 +66,7 @@ export interface RoomInfo {
     maxPlayers: number;
     gameStarted: boolean;
     isLocked: boolean;
+    theme: string;
 }
 
 interface GameStore {
@@ -84,6 +85,7 @@ interface GameStore {
     clearNotification: () => void;
     addBot: () => void;
     removeBot: (botId: string) => void;
+    kickPlayer: (playerId: string) => void;
     startGame: () => void;
     selectWord: (word: string) => void;
     draw: (action: DrawingAction) => void;
@@ -262,6 +264,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const { socket, gameState } = get();
         if (socket && gameState) {
             socket.emit('removeBot', { roomId: gameState.roomId, botId });
+        }
+    },
+
+    kickPlayer: (playerId: string) => {
+        const { socket, gameState } = get();
+        if (socket && gameState) {
+            socket.emit('kickPlayer', { roomId: gameState.roomId, playerId });
         }
     },
 

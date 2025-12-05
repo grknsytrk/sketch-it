@@ -11,12 +11,15 @@ interface DrawingCanvasProps {
 const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawingData }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null); // To measure available space
+    const canvasContainerRef = useRef<HTMLDivElement>(null); // For eraser cursor overlay
     const [isDrawing, setIsDrawing] = useState(false);
     const [currentColor, setCurrentColor] = useState('#000000');
     const [currentSize, setCurrentSize] = useState(3);
     const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
     // We store canvas dimensions to force re-renders and update styles
     const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+    // Eraser cursor position (relative to canvas container)
+    const [eraserCursorPos, setEraserCursorPos] = useState<{ x: number; y: number } | null>(null);
 
     const colors = ['#000000', '#555555', '#FFFFFF', '#FF4444', '#44FF44', '#4444FF', '#FFFF44', '#FF44FF', '#44FFFF', '#FFAA44', '#800080', '#A52A2A'];
 
@@ -138,6 +141,15 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
     };
 
     const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        // Update eraser cursor position for overlay
+        if (isDrawer && currentColor === '#FFFFFF' && canvasContainerRef.current) {
+            const containerRect = canvasContainerRef.current.getBoundingClientRect();
+            setEraserCursorPos({
+                x: e.clientX - containerRect.left,
+                y: e.clientY - containerRect.top
+            });
+        }
+
         if (!isDrawer || !isDrawing) return;
 
         const pos = getMousePos(e);
@@ -162,9 +174,33 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
         setLastPos(pos);
     };
 
+    // Handle mouse leave to hide eraser cursor
+    const handleMouseLeave = () => {
+        setIsDrawing(false);
+        setEraserCursorPos(null);
+    };
+
+    // Handle mouse enter to show eraser cursor
+    const handleMouseEnter = (e: React.MouseEvent<HTMLCanvasElement>) => {
+        if (isDrawer && currentColor === '#FFFFFF' && canvasContainerRef.current) {
+            const containerRect = canvasContainerRef.current.getBoundingClientRect();
+            setEraserCursorPos({
+                x: e.clientX - containerRect.left,
+                y: e.clientY - containerRect.top
+            });
+        }
+    };
+
     const handleMouseUp = () => {
         setIsDrawing(false);
     };
+
+    // Calculate eraser size in pixels based on canvas scale
+    const getEraserSizeInPixels = () => {
+        return currentSize * (dimensions.width / 800);
+    };
+
+    const isEraserActive = isDrawer && currentColor === '#FFFFFF';
 
     const handleClearCanvas = () => {
         if (!isDrawer) return;
@@ -231,13 +267,12 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
             <div ref={wrapperRef} className="flex-1 w-full min-h-0 flex items-center justify-center overflow-hidden">
                 {/* Canvas Container - Fixed 4:3 ratio via calculated dimensions */}
                 <div
+                    ref={canvasContainerRef}
                     className="bg-white border-2 border-ink relative shadow-sketch"
                     style={{
                         width: dimensions.width,
                         height: dimensions.height,
-                        borderRadius: '2px 2px 2px 2px', // Slightly rough corners? No, canvas needs to be rectangle usually.
-                        // But we can add a wrapper with rough corners if we want to mask it.
-                        // For now, keeping it simple rectangle for drawing accuracy.
+                        borderRadius: '2px 2px 2px 2px',
                     }}
                 >
                     <canvas
@@ -245,16 +280,33 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
-                        onMouseLeave={handleMouseUp}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseEnter={handleMouseEnter}
                         className="block w-full h-full"
                         style={{
                             cursor: isDrawer
-                                ? (currentColor === '#FFFFFF'
-                                    ? `url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='white' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z'/%3E%3Cpath d='M17 17L7 7'/%3E%3C/svg%3E") 3 20, auto`
-                                    : 'crosshair')
+                                ? (isEraserActive ? 'none' : 'crosshair')
                                 : 'not-allowed'
                         }}
                     />
+                    {/* Eraser Cursor Overlay - shows size preview */}
+                    {isEraserActive && eraserCursorPos && (
+                        <div
+                            className="pointer-events-none absolute"
+                            style={{
+                                left: eraserCursorPos.x,
+                                top: eraserCursorPos.y,
+                                width: getEraserSizeInPixels(),
+                                height: getEraserSizeInPixels(),
+                                transform: 'translate(-50%, -50%)',
+                                borderRadius: '50%',
+                                border: '2px dashed var(--color-ink)',
+                                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                                boxShadow: '0 0 0 1px rgba(255,255,255,0.8)',
+                                transition: 'width 0.1s, height 0.1s',
+                            }}
+                        />
+                    )}
                 </div>
             </div>
         </div>
