@@ -2,7 +2,7 @@
 
 A real-time multiplayer drawing and guessing game, heavily inspired by Gartic.io. One player draws a word while others race to guess it correctly. It's built to be fast, responsive, and easy to play with friends.
 
-React TypeScript TailwindCSS Vite
+![React](https://img.shields.io/badge/React-19-007ACC?logo=react&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white) ![Tailwind](https://img.shields.io/badge/Tailwind-4.1-38B2AC?logo=tailwindcss&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-7.2-646CFF?logo=vite&logoColor=white)
 
 ## Features
 
