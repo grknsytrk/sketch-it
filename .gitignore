@@ -20,6 +20,7 @@ build/
 # Editor directories
 .vscode/
 .idea/
+.cursor/
 *.swp
 *.swo
 *~
