@@ -99,18 +99,12 @@ export const IconX: React.FC<IconProps> = (props) => (
 
 export const IconEraser: React.FC<IconProps> = (props) => (
     <SketchIcon {...props}>
-        {/* Eraser body - sketchy rectangular shape */}
-        <path d="M4 18h16c0.5 0 1-0.5 1-1V7c0-0.5-0.5-1-1-1H4c-0.5 0-1 0.5-1 1v10c0 0.5 0.5 1 1 1z" />
-        {/* Eraser grip lines - hand drawn feel */}
-        <path d="M7 8.5v7" strokeWidth={1.5} opacity={0.6} />
-        <path d="M10.5 8.5v7" strokeWidth={1.5} opacity={0.6} />
-        {/* Used edge marks - shows it's been used */}
-        <path d="M14 17c0.5-1 1-2 1.5-1.5" strokeWidth={1.5} opacity={0.4} />
-        <path d="M17 16.5c0.3-0.8 0.8-1.5 1.2-1" strokeWidth={1.5} opacity={0.4} />
-        {/* Eraser crumbs/dust for sketchy effect */}
-        <circle cx="15" cy="20" r="0.8" fill="currentColor" opacity={0.3} />
-        <circle cx="18" cy="19.5" r="0.5" fill="currentColor" opacity={0.3} />
-        <circle cx="16.5" cy="20.5" r="0.6" fill="currentColor" opacity={0.3} />
+        {/* Classic pencil eraser shape - angled rectangle */}
+        <path d="M20 20H7L2.5 15.5a2 2 0 0 1 0-2.83L13.67 1.5a2 2 0 0 1 2.83 0l5.66 5.67a2 2 0 0 1 0 2.83L12.5 19.67" />
+        {/* Eraser tip section - the rubber part */}
+        <path d="M7 20l5-5" strokeWidth={2} />
+        {/* Separator line between eraser and body */}
+        <path d="M8.5 13.5L13 9" strokeWidth={1.8} opacity={0.7} />
     </SketchIcon>
 );
 
@@ -232,5 +226,16 @@ export const IconWarning: React.FC<IconProps> = (props) => (
         {/* Exclamation mark */}
         <path d="M12 9v5" strokeWidth={3} />
         <circle cx="12" cy="17" r="1" fill="currentColor" />
+    </SketchIcon>
+);
+
+export const IconUsers: React.FC<IconProps> = (props) => (
+    <SketchIcon {...props}>
+        {/* First person */}
+        <circle cx="9" cy="7" r="3" />
+        <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+        {/* Second person */}
+        <circle cx="16" cy="7" r="2.5" opacity={0.7} />
+        <path d="M21 21v-2a3 3 0 0 0-3-3h-1" opacity={0.7} />
     </SketchIcon>
 );

@@ -20,6 +20,7 @@ function App() {
   const [theme, setTheme] = useState('general');
 
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showPasswordField, setShowPasswordField] = useState(false);
 
   useEffect(() => {
     connect();
@@ -143,7 +144,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-screen relative flex flex-col items-center justify-center gap-8 overflow-hidden">
+    <div className="h-screen w-screen relative flex flex-col items-center justify-start lg:justify-center gap-4 lg:gap-8 overflow-auto py-4 lg:py-0 px-4">
 
       {/* Settings Menu Always Accessible */}
       <SettingsMenu />
@@ -156,16 +157,16 @@ function App() {
         />
       )}
 
-      <div className="text-center z-10">
-        <h1 className="text-6xl sketch-title mb-2">
+      <div className="text-center z-10 flex-shrink-0">
+        <h1 className="text-4xl lg:text-6xl sketch-title mb-1 lg:mb-2">
           SKETCH IT!
         </h1>
-        <p className="font-hand text-ink font-bold opacity-90 text-xl">DRAW, GUESS, WIN!</p>
+        <p className="font-hand text-ink font-bold opacity-90 text-base lg:text-xl">DRAW, GUESS, WIN!</p>
       </div>
 
-      <div className="flex gap-8 z-10 items-start h-[550px]">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 z-10 items-stretch lg:items-start lg:justify-center w-full max-w-6xl flex-1 lg:flex-none lg:h-[550px] min-h-0">
         {/* Left Column: Join/Create Tabs */}
-        <div className="gartic-card w-80 flex flex-col h-full">
+        <div className="gartic-card w-full lg:w-80 flex flex-col flex-1 lg:flex-none lg:h-full min-h-0 max-h-[400px] lg:max-h-none">
           {/* Tabs Header */}
           <div className="flex border-b-2 border-dashed border-gray-300 mb-4">
             <button
@@ -253,15 +254,38 @@ function App() {
                   </select>
                 </div>
 
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm font-bold text-gray-500 font-hand uppercase">Password (Optional)</label>
-                  <input
-                    type="password"
-                    value={createPassword}
-                    onChange={(e) => setCreatePassword(e.target.value)}
-                    className="gartic-input"
-                    placeholder="***"
-                  />
+                {/* Custom Sketchy Toggle */}
+                <div className="flex flex-col gap-3 mb-2">
+                  <div
+                    onClick={() => {
+                      if (showPasswordField) {
+                        setCreatePassword('');
+                      }
+                      setShowPasswordField(!showPasswordField);
+                    }}
+                    className={`sketch-toggle-container ${showPasswordField ? 'active' : ''}`}
+                  >
+                    <div className="sketch-toggle-track">
+                      <div className="sketch-toggle-thumb"></div>
+                    </div>
+                    <span className="sketch-toggle-label uppercase">
+                      {showPasswordField ? 'Private Room' : 'Public Room'}
+                    </span>
+                  </div>
+
+                  {showPasswordField && (
+                    <div className="flex flex-col gap-1 animate-[tab-fade-in_0.3s_ease-out]">
+                      <label className="text-xs font-bold text-gray-400 font-hand uppercase ml-1">Set Password</label>
+                      <input
+                        type="password"
+                        value={createPassword}
+                        onChange={(e) => setCreatePassword(e.target.value)}
+                        className="gartic-input"
+                        placeholder="Secret code..."
+                        autoFocus
+                      />
+                    </div>
+                  )}
                 </div>
                 <button onClick={handleCreate} className="gartic-btn mt-4 w-full py-3 text-xl" style={{ background: 'var(--color-pastel-green)' }}>
                   CREATE & PLAY
@@ -288,7 +312,7 @@ function App() {
         </div>
 
         {/* Right Column: Room List */}
-        <div className="gartic-card w-96 flex flex-col h-full">
+        <div className="gartic-card w-full lg:w-96 flex flex-col flex-1 lg:flex-none lg:h-full min-h-0 max-h-[350px] lg:max-h-none">
           <div className="p-3 border-b-2 border-dashed border-gray-300 flex justify-between items-center mb-2">
             <span className="text-sm font-bold text-gray-500 font-hand">AVAILABLE ROOMS</span>
             <button onClick={getRooms} className="text-ink hover:rotate-180 transition-transform duration-500">

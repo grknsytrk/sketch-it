@@ -298,6 +298,7 @@ body::before {
     opacity: 0;
     transform: translateX(10px) rotate(1deg);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0) rotate(0deg);
@@ -309,6 +310,7 @@ body::before {
     opacity: 0;
     transform: scale(0.98);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -329,6 +331,7 @@ body::before {
     opacity: 0;
     transform: translateY(5px) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -337,4 +340,197 @@ body::before {
 
 .message-enter {
   animation: message-pop 0.2s ease-out;
+}
+
+/* ===== MOBILE RESPONSIVE UTILITIES ===== */
+
+/* Hide/Show utilities */
+@media (max-width: 1023px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .show-on-mobile {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+
+  .show-on-desktop {
+    display: flex !important;
+  }
+}
+
+/* Mobile Tab Bar Style */
+.mobile-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-paper);
+  border-top: 2px solid var(--color-ink);
+  z-index: 40;
+  padding: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.mobile-tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  font-family: var(--font-marker);
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--color-pencil-gray);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.mobile-tab-btn.active {
+  color: var(--color-ink);
+  background: var(--color-pastel-blue);
+}
+
+.mobile-tab-btn:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Touch-friendly adjustments */
+@media (max-width: 1023px) {
+  .gartic-btn {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
+
+  .gartic-input {
+    min-height: 44px;
+    font-size: 16px;
+    /* Prevents iOS zoom on focus */
+  }
+
+  .room-item {
+    min-height: 60px;
+    padding: 14px;
+  }
+
+  /* Adjust connecting screen for mobile */
+  .connecting-text {
+    font-size: 2.5rem;
+  }
+
+  /* Prevent body scroll when modal is open */
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Sketchy Switch Styles */
+.sketch-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sketch-sm);
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.sketch-toggle-container:hover {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.sketch-toggle-track {
+  width: 44px;
+  height: 22px;
+  background: white;
+  border: 2px solid var(--color-ink);
+  border-radius: 20px 5px 18px 6px / 6px 18px 5px 20px;
+  /* Sketchy radius */
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.sketch-toggle-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  background: var(--color-ink);
+  border-radius: 50% 45% 52% 48% / 48% 52% 45% 50%;
+  /* Sketchy circle */
+  transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.sketch-toggle-container.active .sketch-toggle-track {
+  background: var(--color-pastel-yellow);
+  transform: rotate(-1deg);
+}
+
+.sketch-toggle-container.active .sketch-toggle-thumb {
+  left: calc(100% - 19px);
+  background: var(--color-ink);
+}
+
+.sketch-toggle-label {
+  font-family: var(--font-hand);
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.sketch-toggle-container.active .sketch-toggle-label {
+  opacity: 1;
+}
+
+/* Mobile scrollbar - thinner and less intrusive */
+@media (max-width: 1023px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sketch-title {
+    font-size: 2rem !important;
+  }
+
+  .gartic-card {
+    padding: 12px;
+  }
 }

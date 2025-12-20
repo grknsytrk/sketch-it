@@ -115,6 +115,19 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
         };
     };
 
+    // Touch position helper for mobile
+    const getTouchPos = (e: React.TouchEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        if (!canvas) return { x: 0, y: 0 };
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0] || e.changedTouches[0];
+        return {
+            x: (touch.clientX - rect.left) / rect.width,
+            y: (touch.clientY - rect.top) / rect.height
+        };
+    };
+
     const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
         if (!isDrawer) return;
 
@@ -195,6 +208,60 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
         setIsDrawing(false);
     };
 
+    // Touch event handlers for mobile drawing
+    const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+        if (!isDrawer) return;
+        e.preventDefault(); // Prevent scrolling while drawing
+
+        const pos = getTouchPos(e);
+        setIsDrawing(true);
+        setLastPos(pos);
+
+        const action: DrawingAction = {
+            type: 'start',
+            x: pos.x,
+            y: pos.y,
+            color: currentColor,
+            size: currentSize
+        };
+        onDraw(action);
+
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) drawAction(ctx, action);
+        }
+    };
+
+    const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+        if (!isDrawer || !isDrawing) return;
+        e.preventDefault();
+
+        const pos = getTouchPos(e);
+        const action: DrawingAction = {
+            type: 'draw',
+            x: pos.x,
+            y: pos.y,
+            prevX: lastPos.x,
+            prevY: lastPos.y,
+            color: currentColor,
+            size: currentSize
+        };
+        onDraw(action);
+
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) drawAction(ctx, action);
+        }
+
+        setLastPos(pos);
+    };
+
+    const handleTouchEnd = () => {
+        setIsDrawing(false);
+    };
+
     // Calculate eraser size in pixels based on canvas scale
     const getEraserSizeInPixels = () => {
         return currentSize * (dimensions.width / 800);
@@ -209,18 +276,18 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
     };
 
     return (
-        <div className="flex flex-col items-center gap-4 w-full h-full">
+        <div className="flex flex-col items-center gap-2 lg:gap-4 w-full h-full">
             {/* Drawing Tools */}
             {isDrawer && (
-                <div className="flex flex-wrap gap-4 bg-paper border-2 border-ink border-dashed rounded-xl p-4 w-full justify-center shrink-0 items-center shadow-sm">
+                <div className="flex flex-wrap gap-2 lg:gap-4 bg-paper border-2 border-ink border-dashed rounded-xl p-2 lg:p-4 w-full justify-center shrink-0 items-center shadow-sm">
                     {/* Colors */}
-                    <div className="flex gap-2 flex-wrap justify-center">
+                    <div className="flex gap-1 lg:gap-2 flex-wrap justify-center">
                         {colors.map(color => (
                             <button
                                 key={color}
                                 onClick={() => setCurrentColor(color)}
-                                className={`w-8 h-8 rounded-full border-2 transition-transform ${currentColor === color ? 'border-ink scale-125' : 'border-transparent hover:scale-110'}`}
-                                style={{ backgroundColor: color, boxShadow: currentColor === color ? '0 0 0 2px white, 0 0 0 4px var(--color-ink)' : 'none' }}
+                                className={`w-6 h-6 lg:w-8 lg:h-8 rounded-full border-2 transition-transform ${currentColor === color ? 'border-ink scale-110 lg:scale-125' : 'border-transparent hover:scale-110'}`}
+                                style={{ backgroundColor: color, boxShadow: currentColor === color ? '0 0 0 2px white, 0 0 0 3px var(--color-ink)' : 'none' }}
                             />
                         ))}
                     </div>
@@ -245,10 +312,15 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                     {/* Eraser */}
                     <button
                         onClick={() => setCurrentColor('#FFFFFF')}
-                        className={`p-1.5 rounded-lg border-2 transition-all ${currentColor === '#FFFFFF' ? 'border-ink bg-gray-200' : 'border-transparent hover:bg-gray-100 text-gray-500'}`}
+                        className={`p-2 rounded-lg border-2 transition-all flex items-center gap-1 ${currentColor === '#FFFFFF'
+                            ? 'border-ink bg-pink-200 shadow-md scale-105'
+                            : 'border-gray-300 hover:bg-pink-50 hover:border-pink-300 text-gray-600'}`}
                         title="Eraser"
                     >
-                        <IconEraser size={24} />
+                        <IconEraser size={22} className={currentColor === '#FFFFFF' ? 'text-pink-700' : ''} />
+                        <span className="text-xs font-bold font-marker hidden lg:inline">
+                            {currentColor === '#FFFFFF' ? 'ERASING' : ''}
+                        </span>
                     </button>
 
                     <div className="w-[1px] h-8 bg-gray-300 mx-2"></div>
@@ -282,7 +354,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseLeave}
                         onMouseEnter={handleMouseEnter}
-                        className="block w-full h-full"
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        className="block w-full h-full touch-none"
                         style={{
                             cursor: isDrawer
                                 ? (isEraserActive ? 'none' : 'crosshair')
@@ -292,17 +367,17 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ isDrawer, onDraw, drawing
                     {/* Eraser Cursor Overlay - shows size preview */}
                     {isEraserActive && eraserCursorPos && (
                         <div
-                            className="pointer-events-none absolute"
+                            className="pointer-events-none absolute animate-pulse"
                             style={{
                                 left: eraserCursorPos.x,
                                 top: eraserCursorPos.y,
-                                width: getEraserSizeInPixels(),
-                                height: getEraserSizeInPixels(),
+                                width: Math.max(getEraserSizeInPixels(), 16),
+                                height: Math.max(getEraserSizeInPixels(), 16),
                                 transform: 'translate(-50%, -50%)',
                                 borderRadius: '50%',
-                                border: '2px dashed var(--color-ink)',
-                                backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                                boxShadow: '0 0 0 1px rgba(255,255,255,0.8)',
+                                border: '3px solid #e11d48',
+                                backgroundColor: 'rgba(251, 207, 232, 0.4)',
+                                boxShadow: '0 0 0 2px rgba(255,255,255,0.9), 0 0 8px rgba(225, 29, 72, 0.5)',
                                 transition: 'width 0.1s, height 0.1s',
                             }}
                         />

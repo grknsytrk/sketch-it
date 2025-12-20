@@ -31,7 +31,7 @@ const Scoreboard: React.FC = () => {
 
     return (
         <>
-            <div className="w-64 flex flex-col gap-2 h-full overflow-y-auto pr-2">
+            <div className="w-full lg:w-64 max-w-sm flex flex-col gap-2 h-full overflow-y-auto pr-2">
                 {sortedPlayers.map((player, index) => {
                     const isDrawer = player.index === gameState.currentDrawer;
                     const isMe = player.id === myPlayerId;

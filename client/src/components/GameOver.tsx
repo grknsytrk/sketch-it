@@ -45,19 +45,18 @@ const GameOver: React.FC<GameOverProps> = ({ winners, isHost }) => {
                     <img
                         src={getAvatarUrl(player.avatarSeed || player.name)}
                         alt={player.name}
-                        className="w-20 h-20 rounded-full border-2 border-ink bg-white object-cover"
+                        className="w-14 h-14 lg:w-20 lg:h-20 rounded-full border-2 border-ink bg-white object-cover"
                     />
                     <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full ${bgColor} flex items-center justify-center text-ink font-black border-2 border-ink`}>
                         {rank}
                     </div>
                 </div>
 
-                {/* Name & Score */}
-                <div className="text-center mt-4">
-                    <div className="font-bold text-ink text-lg truncate max-w-[120px] font-marker">
+                <div className="text-center mt-3 lg:mt-4">
+                    <div className="font-bold text-ink text-sm lg:text-lg truncate max-w-[80px] lg:max-w-[120px] font-marker">
                         {player.name}
                     </div>
-                    <div className="font-bold text-gray-600 text-sm">
+                    <div className="font-bold text-gray-600 text-xs lg:text-sm">
                         {player.score} pts
                     </div>
                 </div>
@@ -71,20 +70,20 @@ const GameOver: React.FC<GameOverProps> = ({ winners, isHost }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="sketch-modal max-w-2xl w-full relative overflow-hidden bg-paper">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2">
+            <div className="sketch-modal max-w-2xl w-[95vw] relative overflow-hidden bg-paper p-4 lg:p-8">
 
-                <div className="text-center mb-12 relative z-10">
-                    <h2 className="text-5xl font-black text-ink tracking-widest mb-2 font-marker transform -rotate-2">
+                <div className="text-center mb-6 lg:mb-12 relative z-10">
+                    <h2 className="text-3xl lg:text-5xl font-black text-ink tracking-widest mb-2 font-marker transform -rotate-2">
                         GAME OVER
                     </h2>
-                    <p className="text-gray-500 font-bold uppercase tracking-wider font-hand text-xl">
+                    <p className="text-gray-500 font-bold uppercase tracking-wider font-hand text-base lg:text-xl">
                         And the winners are...
                     </p>
                 </div>
 
                 {/* Podium */}
-                <div className="flex justify-center items-end gap-4 mb-12 h-64 relative z-10 px-8">
+                <div className="flex justify-center items-end gap-2 lg:gap-4 mb-6 lg:mb-12 h-48 lg:h-64 relative z-10 px-2 lg:px-8">
                     {winners[1] && renderPodiumSpot(winners[1], 2)}
                     {winners[0] && renderPodiumSpot(winners[0], 1)}
                     {winners[2] && renderPodiumSpot(winners[2], 3)}
